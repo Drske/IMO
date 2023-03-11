@@ -10,7 +10,7 @@ using namespace std;
 class TSPSolver
 {
 public:
-    virtual TPaths solve() = 0;
+    virtual TPaths solve(int start_vertex) = 0;
     void load_data(int [][N]);
     void add_vertex_to_path(int, int);
 

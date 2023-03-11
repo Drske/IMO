@@ -6,7 +6,7 @@
 class RESolver : public TSPSolver
 {
 public:
-    TPaths solve();
+    TPaths solve(int start_vertex);
 };
 
 #endif

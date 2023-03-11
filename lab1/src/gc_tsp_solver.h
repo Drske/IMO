@@ -5,7 +5,7 @@
 
 class GCSolver : public TSPSolver
 {
-    TPaths solve();
+    TPaths solve(int start_vertex);
 };
 
 #endif

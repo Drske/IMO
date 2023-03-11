@@ -128,7 +128,9 @@ int main(int argc, char **argv)
         }
     }
 
+    int start_vertex = 0;
+
     (*solver).load_data(distance_matrix);
-    (*solver).solve();
+    (*solver).solve(start_vertex);
     return 0;
 }
