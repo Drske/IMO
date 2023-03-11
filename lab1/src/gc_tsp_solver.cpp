@@ -11,15 +11,10 @@ TPaths GCSolver::solve(int start_vertex){
     this->add_vertex_to_path(2, start_vertex2);
     this->add_vertex_to_path(2, this->find_nearest_vertex(start_vertex2));
 
-    int path_costs[2] = {
-        this->distance_matrix[this->paths.first[0]][this->paths.first[1]],
-        this->distance_matrix[this->paths.second[0]][this->paths.second[1]]
-    };
-
     while (this->path_length.first + this->path_length.second < 100) {
         for (int i = 0; i < 2; i++) {
-            int* path = (i == 0) ? this->paths.first : this->paths.second;
-            int cost = path_costs[i];
+            vector<int> path = (i == 0) ? this->paths.first : this->paths.second;
+            int cost = (i == 0) ? this->path_cost.first : this->path_cost.second;
             int path_length = (i == 0) ? this->path_length.first : this->path_length.second;
 
             int best_vertex = -1;
@@ -55,12 +50,12 @@ TPaths GCSolver::solve(int start_vertex){
                 }
             }
 
-            if (best_placement == path_length)
-                this->add_vertex_to_path(i + 1, best_vertex);
+            this->add_vertex_to_path(i + 1, best_vertex, best_placement);
+            
+            if (i == 0)
+                this->path_cost.first = best_cost;
             else
-                // TODO
-
-            path_costs[i] = best_cost;
+                this->path_cost.second = best_cost;
         }
     }
 

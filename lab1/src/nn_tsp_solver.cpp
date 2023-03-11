@@ -8,12 +8,13 @@ TPaths NNSolver::solve(int start_vertex){
     this->add_vertex_to_path(1, start_vertex);
     this->add_vertex_to_path(2, start_vertex2);
 
-    int path_costs[2] = {0, 0};
+    this->path_cost.first = 0;
+    this->path_cost.second = 0;
 
     while (this->path_length.first + this->path_length.second < 100) {
         for (int i = 0; i < 2; i++) {
-            int* path = (i == 0) ? this->paths.first : this->paths.second;
-            int cost = path_costs[i];
+            vector<int> path = (i == 0) ? this->paths.first : this->paths.second;
+            int cost = (i == 0) ? this->path_cost.first : this->path_cost.second;
             int path_length = (i == 0) ? this->path_length.first : this->path_length.second;
 
             // Find nearest vertex
@@ -34,15 +35,17 @@ TPaths NNSolver::solve(int start_vertex){
                 }
             }
 
-            // Add new vertex to the best placement
-            if (best_placement == path_length)
-                this->add_vertex_to_path(i + 1, new_vertex);
-            else
-                // TODO
+            this->add_vertex_to_path(i + 1, new_vertex, best_placement);
 
-            path_costs[i] = best_cost;
+            if (i == 0)
+                this->path_cost.first = best_cost;
+            else
+                this->path_cost.second = best_cost;
         }
     }
+
+    this->path_cost.first += this->distance_matrix[this->paths.first.back()][this->paths.first.front()];
+    this->path_cost.second += this->distance_matrix[this->paths.second.back()][this->paths.second.front()];
 
     return this->paths;
 }
