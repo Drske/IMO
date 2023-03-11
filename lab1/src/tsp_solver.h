@@ -1,27 +1,23 @@
 #ifndef TSP_SOLVER_H
 #define TSP_SOLVER_H
 
-#include <utility>
 #include <vector>
 
-#define N 100
+#include "types.h"
 
 using namespace std;
-
-// typedef pair<int[N/2], int[N/2]> TPaths;
-typedef vector<pair<int,int> > TPaths;
 
 class TSPSolver
 {
 public:
-    TPaths solve();
+    virtual TPaths solve() = 0;
     void load_data(int [][N]);
-    void add_path(int, int);
+    void add_indice_to_path(int, int);
 
 protected:
     int distance_matrix[N][N];
     TPaths paths;
-    int no_of_paths;
+    TPathLength path_length;
 };
 
 #endif

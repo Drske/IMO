@@ -1,5 +1,5 @@
-#ifndef RE_TSP_SOLVER
-#define RE_TSP_SOLVER
+#ifndef RE_TSP_SOLVER_H
+#define RE_TSP_SOLVER_H
 
 #include "tsp_solver.h"
 
