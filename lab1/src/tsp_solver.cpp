@@ -17,6 +17,8 @@ void TSPSolver::add_vertex_to_path(int path_no, int vertex_id){
         this->paths.second[path_length.second] = vertex_id;
         this->path_length.second += 1;
     }
+
+    this->used_vertices[vertex_id] = true;
 }
 
 int TSPSolver::find_furthest_vertex(int vertex_id) {
@@ -34,8 +36,6 @@ int TSPSolver::find_furthest_vertex(int vertex_id) {
             max_distance = distance;
         }
     }
-
-    this->used_vertices[furthest_vertex_id] = true;
 
     return furthest_vertex_id;
 }
@@ -55,8 +55,6 @@ int TSPSolver::find_nearest_vertex(int vertex_id) {
             min_distance = distance;
         }
     }
-
-    this->used_vertices[nearest_vertex_id] = true;
 
     return nearest_vertex_id;
 }
