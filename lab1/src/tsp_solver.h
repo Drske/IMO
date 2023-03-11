@@ -12,7 +12,7 @@ class TSPSolver
 public:
     virtual TPaths solve() = 0;
     void load_data(int [][N]);
-    void add_indice_to_path(int, int);
+    void add_vertex_to_path(int, int);
 
 protected:
     int distance_matrix[N][N];

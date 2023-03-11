@@ -10,7 +10,7 @@ using namespace std;
 typedef pair<int[N/2], int[N/2]> TPaths;
 typedef pair<int,int> TPathLength;
 
-typedef pair<int,int> TIndice;
-typedef TIndice TIndices[N];
+typedef pair<int,int> TVertex;
+typedef TVertex TVertices[N];
 
 #endif

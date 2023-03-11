@@ -38,7 +38,7 @@ string get_cmd_otpion(string option, int argc, char **argv)
     return "";
 }
 
-int euclidean_distance(TIndice A, TIndice B)
+int euclidean_distance(TVertex A, TVertex B)
 {
     double u = A.first - B.first;
     double v = A.second - B.second;
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
     int header_lines = 6;
     int id, x, y;
-    TIndices indices;
+    TVertices vertices;
 
     while (std::getline(file, line))
     {
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         x = stoi(line.substr(0, line.find(" ")));
         line.erase(0, line.find(" ") + 1);
         y = stoi(line);
-        indices[id - 1] = make_pair(x, y);
+        vertices[id - 1] = make_pair(x, y);
     }
     file.close();
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     {
         for (int j = 0; j < N; j++)
         {
-            distance_matrix[i][j] = euclidean_distance(indices[i], indices[j]);
+            distance_matrix[i][j] = euclidean_distance(vertices[i], vertices[j]);
         }
     }
 
