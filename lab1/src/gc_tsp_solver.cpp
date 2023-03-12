@@ -33,7 +33,7 @@ TPaths GCSolver::solve(int start_vertex){
                         v2 = path[0];
 
                         if (cost == 0)
-                            new_cost = cost + this->distance_matrix[v1][j] + this->distance_matrix[j][v2];
+                            new_cost = this->distance_matrix[v1][v2] + this->distance_matrix[v1][j] + this->distance_matrix[j][v2];
                         else
                             new_cost = cost - this->distance_matrix[v1][v2] + this->distance_matrix[v1][j] + this->distance_matrix[j][v2];
                     } else {
