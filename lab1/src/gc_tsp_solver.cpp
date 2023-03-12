@@ -4,7 +4,7 @@ TPaths GCSolver::solve(int start_vertex){
     printf("Solving greedy cycle\n");
 
     int start_vertex2 = this->find_furthest_vertex(start_vertex);
-    
+
     // Create cycles
     this->add_vertex_to_path(1, start_vertex);
     this->add_vertex_to_path(1, this->find_nearest_vertex(start_vertex));
@@ -28,7 +28,7 @@ TPaths GCSolver::solve(int start_vertex){
                 for (int k = 1; k <= path_length; k++) {
                     int v1, v2, new_cost;
 
-                    if (k == path_length) {
+                    if (k == path_length || cost == 0) {
                         v1 = path[path_length-1];
                         v2 = path[0];
 
