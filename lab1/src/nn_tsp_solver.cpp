@@ -11,7 +11,7 @@ TPaths NNSolver::solve(int start_vertex){
     this->path_cost.first = 0;
     this->path_cost.second = 0;
 
-    while (this->path_length.first + this->path_length.second < 100) {
+    while (this->path_length.first + this->path_length.second < N) {
         for (int i = 0; i < 2; i++) {
             vector<int> path = (i == 0) ? this->paths.first : this->paths.second;
             int cost = (i == 0) ? this->path_cost.first : this->path_cost.second;

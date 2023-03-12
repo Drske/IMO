@@ -11,7 +11,7 @@ TPaths GCSolver::solve(int start_vertex){
     this->add_vertex_to_path(2, start_vertex2);
     this->add_vertex_to_path(2, this->find_nearest_vertex(start_vertex2));
 
-    while (this->path_length.first + this->path_length.second < 100) {
+    while (this->path_length.first + this->path_length.second < N) {
         for (int i = 0; i < 2; i++) {
             vector<int> path = (i == 0) ? this->paths.first : this->paths.second;
             int cost = (i == 0) ? this->path_cost.first : this->path_cost.second;

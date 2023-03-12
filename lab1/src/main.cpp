@@ -5,15 +5,15 @@
 #include <fstream>
 #include <math.h>
 #include <random>
+#include <nlohmann/json.hpp>
 
 #include "tsp_solver.h"
 #include "nn_tsp_solver.h"
 #include "gc_tsp_solver.h"
 #include "re_tsp_solver.h"
 
-#define N 100
-
 using namespace std;
+using json = nlohmann::json;
 
 bool cmd_option_provided(string option, int argc, char **argv)
 {
@@ -50,23 +50,47 @@ int euclidean_distance(TVertex A, TVertex B)
     return round(dist);
 }
 
+void save_results_to_json(string data_path, string output_path, string solver_name, TPaths paths, TPathCost cost, int start_vertex)
+{
+    size_t pos = data_path.find_last_of("/"); // znalezienie ostatniego wystąpienia separatora
+    string instance = data_path.substr(pos+1); // wyodrębnienie nazwy pliku
+    
+    json j;
+    j["instance"] = instance;
+    j["solver"] = solver_name;
+    j["start-vertex"] = start_vertex;
+    j["cost"] = {
+        {"first", cost.first},
+        {"second", cost.second}
+    };
+    j["path"] = {
+        {"first", paths.first},
+        {"second", paths.second}
+    };
+
+    ofstream ofs(output_path);
+    ofs << j.dump(4);
+    ofs.close();
+}
+
 int main(int argc, char **argv)
 {
-    map<string, TSPSolver*> solvers;
+    map<string, TSPSolver *> solvers;
 
     solvers["nearest-neighbour"] = new NNSolver();
     solvers["greedy-cycle"] = new GCSolver();
     solvers["regrets"] = new RESolver();
 
     TSPSolver *solver;
+    string solver_name;
     string data_path;
     string output_path;
     int start_vertex;
 
-
     if (cmd_option_provided("-solver", argc, argv))
     {
-        solver = solvers[get_cmd_option("-solver", argc, argv)];
+        solver_name = get_cmd_option("-solver", argc, argv);
+        solver = solvers[solver_name];
     }
     else
     {
@@ -94,13 +118,15 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    if (cmd_option_provided("-start-vertex", argc, argv)){
+    if (cmd_option_provided("-start-vertex", argc, argv))
+    {
         start_vertex = stoi(get_cmd_option("-start-vertex", argc, argv));
     }
-    else{
+    else
+    {
         random_device rd;
         mt19937 rng(rd());
-        uniform_int_distribution<int> uni(1,100);
+        uniform_int_distribution<int> uni(1, N);
 
         start_vertex = uni(rng);
     }
@@ -144,6 +170,9 @@ int main(int argc, char **argv)
 
     (*solver).load_data(distance_matrix);
     TPaths paths = (*solver).solve(start_vertex - 1);
-    
+    TPathCost cost = (*solver).get_cost();
+
+    save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
+
     return 0;
 }

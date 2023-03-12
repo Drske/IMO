@@ -1,0 +1,23 @@
+{
+    "cost": {
+        "first": 284,
+        "second": 285
+    },
+    "instance": "kroT8.tsp",
+    "path": {
+        "first": [
+            4,
+            1,
+            6,
+            3
+        ],
+        "second": [
+            2,
+            7,
+            0,
+            5
+        ]
+    },
+    "solver": "regrets",
+    "start-vertex": 4
+}

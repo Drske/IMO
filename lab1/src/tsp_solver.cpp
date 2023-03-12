@@ -8,7 +8,7 @@ void TSPSolver::load_data(int distance_matrix[][N]){
     }
 }
 
-TPathCost TSPSolver::get_cost(int path_no){
+TPathCost TSPSolver::get_cost(){
     return this->path_cost;
 }
 

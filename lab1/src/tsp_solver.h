@@ -13,7 +13,7 @@ public:
     void add_vertex_to_path(int path_no, int vertex_id, int index = -1);
     int find_furthest_vertex(int vertex_id);
     int find_nearest_vertex(int vertex_id);
-    TPathCost get_cost(int);
+    TPathCost get_cost();
 
 protected:
     int distance_matrix[N][N];
