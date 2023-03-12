@@ -143,6 +143,7 @@ int main(int argc, char **argv)
     }
 
     (*solver).load_data(distance_matrix);
-    (*solver).solve(start_vertex - 1);
+    TPaths paths = (*solver).solve(start_vertex - 1);
+    
     return 0;
 }

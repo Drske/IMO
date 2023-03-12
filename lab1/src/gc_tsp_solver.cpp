@@ -49,7 +49,7 @@ TPaths GCSolver::solve(int start_vertex){
                     }
                 }
             }
-
+            
             this->add_vertex_to_path(i + 1, best_vertex, best_placement);
             
             if (i == 0)

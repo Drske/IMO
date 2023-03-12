@@ -15,4 +15,7 @@ typedef pair<int,int> TPathCost;
 typedef pair<int,int> TVertex;
 typedef TVertex TVertices[N];
 
+typedef pair<int,int> TInsertionCost;
+typedef vector<TInsertionCost> TInsertionCosts;
+
 #endif
