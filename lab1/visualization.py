@@ -14,7 +14,7 @@ start_vertex = result['start-vertex']
 path1 = result['path']['first']
 path2 = result['path']['second']
 
-df = pd.read_csv('data/kroT8.csv')
+df = pd.read_csv('data/kroB100.csv')
 
 ids = df['Node'].values
 X = df['X'].values
@@ -35,8 +35,8 @@ ax.set_title(f'solver = {solver} \n cost1 = {cost1} \n cost2 = {cost2} \n instan
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 
-# for i, id in enumerate(ids):
-#     ax.annotate(id, (X[i], Y[i]), fontsize=6, ha='center', va='center')
+for i, id in enumerate(ids):
+    ax.annotate(id-1, (X[i], Y[i]), fontsize=6, ha='center', va='center')
 
 fig.tight_layout()
 
