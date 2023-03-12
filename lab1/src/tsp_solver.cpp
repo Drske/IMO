@@ -8,9 +8,9 @@ void TSPSolver::load_data(int distance_matrix[][N]){
     }
 }
 
-void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index = -1){
+void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
     if (path_no == 1) {
-        if (!index || index == this->path_length.first)
+        if ((index == -1) || index == this->path_length.first)
             this->paths.first.push_back(vertex_id);
         else
             this->paths.first.insert(this->paths.first.begin() + index, vertex_id);
@@ -18,7 +18,7 @@ void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index = -1){
         this->path_length.first += 1;
     }
     if (path_no == 2){
-        if (!index || index == this->path_length.second)
+        if ((index == -1) || index == this->path_length.second)
             this->paths.second.push_back(vertex_id);
         else
             this->paths.second.insert(this->paths.second.begin() + index, vertex_id);
