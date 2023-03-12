@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <math.h>
+#include <random>
 
 #include "tsp_solver.h"
 #include "nn_tsp_solver.h"
@@ -16,7 +17,7 @@ using namespace std;
 
 bool cmd_option_provided(string option, int argc, char **argv)
 {
-    for (int i = 1; i <= argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         if (argv[i] == option)
         {
@@ -26,9 +27,9 @@ bool cmd_option_provided(string option, int argc, char **argv)
     return false;
 }
 
-string get_cmd_otpion(string option, int argc, char **argv)
+string get_cmd_option(string option, int argc, char **argv)
 {
-    for (int i = 1; i <= argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         if (argv[i] == option)
         {
@@ -60,10 +61,12 @@ int main(int argc, char **argv)
     TSPSolver *solver;
     string data_path;
     string output_path;
+    int start_vertex;
+
 
     if (cmd_option_provided("-solver", argc, argv))
     {
-        solver = solvers[get_cmd_otpion("-solver", argc, argv)];
+        solver = solvers[get_cmd_option("-solver", argc, argv)];
     }
     else
     {
@@ -73,7 +76,7 @@ int main(int argc, char **argv)
 
     if (cmd_option_provided("-in", argc, argv))
     {
-        data_path = get_cmd_otpion("-in", argc, argv);
+        data_path = get_cmd_option("-in", argc, argv);
     }
     else
     {
@@ -83,12 +86,23 @@ int main(int argc, char **argv)
 
     if (cmd_option_provided("-out", argc, argv))
     {
-        output_path = get_cmd_otpion("-out", argc, argv);
+        output_path = get_cmd_option("-out", argc, argv);
     }
     else
     {
         cout << "No output file provided";
         return 1;
+    }
+
+    if (cmd_option_provided("-start-vertex", argc, argv)){
+        start_vertex = stoi(get_cmd_option("-start-vertex", argc, argv));
+    }
+    else{
+        random_device rd;
+        mt19937 rng(rd());
+        uniform_int_distribution<int> uni(1,100);
+
+        start_vertex = uni(rng);
     }
 
     ifstream file(data_path);
@@ -128,9 +142,7 @@ int main(int argc, char **argv)
         }
     }
 
-    int start_vertex = 0;
-
     (*solver).load_data(distance_matrix);
-    (*solver).solve(start_vertex);
+    (*solver).solve(start_vertex - 1);
     return 0;
 }
