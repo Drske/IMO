@@ -19,7 +19,7 @@ TPaths NNSolver::solve(int start_vertex){
 
             // Find nearest vertex
             int new_vertex = this->find_nearest_vertex(path[path_length-1]);
-            
+
             // Find best placement for new vertex
             int best_cost = cost + this->distance_matrix[path[path_length-1]][new_vertex];
             int best_placement = path_length;
