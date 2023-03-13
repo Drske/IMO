@@ -46,6 +46,6 @@ for i, id in enumerate(ids):
 
 fig.tight_layout()
 
-# plt.savefig('foo.pdf')
-plt.show()
+plt.savefig(sys.argv[3])
+# plt.show()
 
