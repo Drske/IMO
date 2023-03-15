@@ -1,6 +1,6 @@
 #include "re_tsp_solver.h"
 
-bool compare_costs(const pair<int, int> &a, const pair<int, int> &b)
+bool RESolver::compare_costs(const pair<int, int> &a, const pair<int, int> &b)
 {
     return a.second < b.second;
 }
@@ -18,7 +18,7 @@ TInsertionCosts RESolver::calculate_insertion_costs(vector<int> path, int vertex
 
         cost = this->distance_matrix[v1][vertex_id] + this->distance_matrix[vertex_id][v2] - this->distance_matrix[v1][v2];
 
-        insertion_cost = make_pair(k, cost);
+        insertion_cost = make_pair(k + 1 % path.size(), cost);
         insertion_costs.push_back(insertion_cost);
     }
 
@@ -33,10 +33,11 @@ TPaths RESolver::solve(int start_vertex)
     int start_vertex2 = this->find_furthest_vertex(start_vertex);
 
     this->add_vertex_to_path(1, start_vertex);
+    this->add_vertex_to_path(1, find_nearest_vertex(start_vertex), 1);
+    this->path_cost.first = distance_matrix[start_vertex][find_nearest_vertex(start_vertex)];
     this->add_vertex_to_path(2, start_vertex2);
-
-    this->path_cost.first = 0;
-    this->path_cost.second = 0;
+    this->add_vertex_to_path(2, find_nearest_vertex(start_vertex2), 1);
+    this->path_cost.second = distance_matrix[start_vertex2][find_nearest_vertex(start_vertex2)];
 
     while (this->path_length.first + this->path_length.second < N)
     {
@@ -58,9 +59,9 @@ TPaths RESolver::solve(int start_vertex)
 
                 insertion_costs = this->calculate_insertion_costs(path, j);
 
-                regret = (insertion_costs.size() == 1) ? insertion_costs[0].second : insertion_costs[1].second - insertion_costs[1].second;
+                regret = (insertion_costs.size() == 1) ? insertion_costs[0].second : insertion_costs[1].second - insertion_costs[0].second;
 
-                if (regret > biggest_regret)
+                if ((regret > biggest_regret) || (regret == biggest_regret && insertion_costs[0].second < best_cost))
                 {
                     best_vertex = j;
                     best_placement = insertion_costs[0].first;
@@ -81,6 +82,11 @@ TPaths RESolver::solve(int start_vertex)
             }
         }
     }
+
+    this->path_cost.first += distance_matrix[paths.first.front()][paths.first.back()];
+    this->path_cost.second += distance_matrix[paths.second.front()][paths.second.back()];
+    this->add_vertex_to_path(1, paths.first.front());
+    this->add_vertex_to_path(2, paths.second.front());
 
     return this->paths;
 }
