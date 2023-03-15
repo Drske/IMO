@@ -17,26 +17,42 @@ TPaths NNSolver::solve(int start_vertex){
             int cost = (i == 0) ? this->path_cost.first : this->path_cost.second;
             int path_length = (i == 0) ? this->path_length.first : this->path_length.second;
 
-            // Find nearest vertex
-            int new_vertex = this->find_nearest_vertex(path[path_length-1]);
+            int best_vertex = -1;
+            int best_cost = INT_MAX;
+            int best_placement = -1;
 
-            // Find best placement for new vertex
-            int best_cost = cost + this->distance_matrix[path[path_length-1]][new_vertex];
-            int best_placement = path_length;
+            for (int j = 0; j < N; j++) {
+                if (this->used_vertices[j])
+                    continue;
 
-            for (int j = 1; j < path_length; j++) {
-                int v1 = path[j-1];
-                int v2 = path[j];
-                int new_cost = cost - this->distance_matrix[v1][v2] + this->distance_matrix[v1][new_vertex] + this->distance_matrix[new_vertex][v2];
+                for (int k = 0; k <= path_length; k++) {
+                    int new_cost;
 
-                if (new_cost < best_cost) {
-                    best_cost = new_cost;
-                    best_placement = j;
+                    if (k == 0) {
+                        // Cost of adding new vertex at the start of the current path
+                        new_cost = this->distance_matrix[j][path[k]] + cost;
+                    } else if (k == path_length) {
+                        // Cost of adding new vertex at the end of the current path
+                        new_cost = cost + this->distance_matrix[j][path[k-1]];
+                    } else {
+                        // Cost of adding new vertex in the middle of the current path
+                        int v1 = path[k-1]; 
+                        int v2 = path[k];
+                        new_cost = cost - this->distance_matrix[v1][v2] + this->distance_matrix[v1][j] + this->distance_matrix[j][v2];
+                    }
+
+                    if (new_cost < best_cost) {
+                        best_vertex = j;
+                        best_cost = new_cost;
+                        best_placement = k;
+                    }
                 }
             }
 
-            this->add_vertex_to_path(i + 1, new_vertex, best_placement);
+            // Add new vertex at the best position found
+            this->add_vertex_to_path(i + 1, best_vertex, best_placement);
 
+            // Update cost
             if (i == 0)
                 this->path_cost.first = best_cost;
             else
