@@ -85,8 +85,8 @@ TPaths RESolver::solve(int start_vertex)
 
     this->path_cost.first += distance_matrix[paths.first.front()][paths.first.back()];
     this->path_cost.second += distance_matrix[paths.second.front()][paths.second.back()];
-    this->add_vertex_to_path(1, paths.first.front());
-    this->add_vertex_to_path(2, paths.second.front());
+    // this->add_vertex_to_path(1, paths.first.front());
+    // this->add_vertex_to_path(2, paths.second.front());
 
     return this->paths;
 }
