@@ -3,7 +3,7 @@
 Do kompilacji programu, wymagane są następujące dodatkowe biblioteki:
 
 * **JSON for Modern C++**: [nlohman/json](https:github.com/nlohmann/json)
-
+  * **MacOS (brew):** `brew install nlohmann-json`
 
 # Podział zadań
 
