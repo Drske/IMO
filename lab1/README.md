@@ -1,3 +1,10 @@
+# Wymagania
+
+Do kompilacji programu, wymagane są następujące dodatkowe biblioteki:
+
+* **JSON for Modern C++**: [nlohman/json](https:github.com/nlohmann/json)
+
+
 # Podział zadań
 
 * Pipeline:
