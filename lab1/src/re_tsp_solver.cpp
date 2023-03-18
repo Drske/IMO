@@ -33,11 +33,14 @@ TPaths RESolver::solve(int start_vertex)
     int start_vertex2 = this->find_furthest_vertex(start_vertex);
 
     this->add_vertex_to_path(1, start_vertex);
-    this->add_vertex_to_path(1, find_nearest_vertex(start_vertex), 1);
-    this->path_cost.first = distance_matrix[start_vertex][find_nearest_vertex(start_vertex)];
+    int nearest_start = find_nearest_vertex(start_vertex);
+    this->add_vertex_to_path(1, nearest_start, 1);
+    this->path_cost.first = 2 * distance_matrix[start_vertex][nearest_start];
+
     this->add_vertex_to_path(2, start_vertex2);
-    this->add_vertex_to_path(2, find_nearest_vertex(start_vertex2), 1);
-    this->path_cost.second = distance_matrix[start_vertex2][find_nearest_vertex(start_vertex2)];
+    int nearest_start2 = find_nearest_vertex(start_vertex2);
+    this->add_vertex_to_path(2, nearest_start2, 1);
+    this->path_cost.second = 2 * distance_matrix[start_vertex2][nearest_start2];
 
     while (this->path_length.first + this->path_length.second < N)
     {
@@ -82,11 +85,6 @@ TPaths RESolver::solve(int start_vertex)
             }
         }
     }
-
-    this->path_cost.first += distance_matrix[paths.first.front()][paths.first.back()];
-    this->path_cost.second += distance_matrix[paths.second.front()][paths.second.back()];
-    // this->add_vertex_to_path(1, paths.first.front());
-    // this->add_vertex_to_path(2, paths.second.front());
 
     return this->paths;
 }
