@@ -53,20 +53,18 @@ int euclidean_distance(TVertex A, TVertex B)
 void save_results_to_json(string data_path, string output_path, string solver_name, TPaths paths, TPathCost cost, int start_vertex)
 {
     size_t pos = data_path.find_last_of("/");
-    string instance = data_path.substr(pos+1);
-    
+    string instance = data_path.substr(pos + 1);
+
     json j;
     j["instance"] = instance;
     j["solver"] = solver_name;
     j["start-vertex"] = start_vertex;
     j["cost"] = {
         {"first", cost.first},
-        {"second", cost.second}
-    };
+        {"second", cost.second}};
     j["path"] = {
         {"first", paths.first},
-        {"second", paths.second}
-    };
+        {"second", paths.second}};
 
     ofstream ofs(output_path);
     ofs << j.dump(4);
