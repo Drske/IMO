@@ -5,7 +5,12 @@
 
 class RLSSolver : public LSSolver
 {
-    TPaths solve(TPaths start_solution);
+    public:
+    TPaths solve();
+    void set_iterations(int);
+
+    private:
+    int iterations;
 };
 
 #endif

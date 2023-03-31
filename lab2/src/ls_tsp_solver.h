@@ -10,7 +10,7 @@ using namespace std;
 class LSSolver : public TSPSolver
 {
 public:
-    virtual TPaths solve(TPaths start_solution) = 0;
+    virtual TPaths solve(TPaths start_solution) {return this->paths;}
     void set_neighbourhood(string);
     
 protected:
