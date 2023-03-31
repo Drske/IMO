@@ -6,11 +6,6 @@
 class RLSSolver : public LSSolver
 {
     public:
-    TPaths solve();
-    void set_iterations(int);
-
-    private:
-    int iterations;
-};
-
+    TPaths solve();   
+}
 #endif

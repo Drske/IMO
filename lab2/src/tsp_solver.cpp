@@ -12,6 +12,10 @@ TPathCost TSPSolver::get_cost(){
     return this->path_cost;
 }
 
+void TSPSolver::set_iterations(int iterations){
+    this->iterations = iterations;
+}
+
 void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
     if (path_no == 1) {
         if ((index == -1) || index == this->path_length.first)

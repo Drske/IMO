@@ -7,7 +7,3 @@ TPaths RLSSolver::solve() {
     // First iteration generates fully random solution
     return this->paths;
 }
-
-void RLSSolver::set_iterations(int iterations){
-    this->iterations = iterations;
-}
