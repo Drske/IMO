@@ -1,4 +1,4 @@
-#include "local_tsp_solver.h"
+#include "ls_tsp_solver.h"
 
 TPaths LSSolver::solve_greedy(TPaths start_solution) {
     // TODO
