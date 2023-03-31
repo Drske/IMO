@@ -9,8 +9,9 @@ class VertexMove : public Move
 {
 public:
     VertexMove(pair<int, int> path_ids, pair<int, int> vertex_ids);
-    void apply(TPaths* paths) = 0;
-    pair<int, int> get_cost_delta(TPaths paths) = 0;
+    void apply(TPaths* paths);
+    void print();
+    pair<int, int> get_cost_delta(TPaths paths);
 private:
     pair<int, int> path_ids;
     pair<int, int> vertex_ids;

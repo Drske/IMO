@@ -9,8 +9,9 @@ class EdgeMove : public Move
 {
 public:
     EdgeMove(int path_id, TEdges edge_ids);
-    void apply(TPaths* paths) = 0;
-    TPathCost get_cost_delta(TPaths paths) = 0;
+    void apply(TPaths* paths);
+    void print();
+    TPathCost get_cost_delta(TPaths paths);
 private:
     int path_id;
     TEdges edge_ids;
