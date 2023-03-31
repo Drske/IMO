@@ -8,8 +8,10 @@ using namespace std;
 class Move
 {
 public:
+    virtual ~Move() {}
     virtual void apply(TPaths* paths) = 0;
     virtual pair<int, int> get_cost_delta(TPaths paths) = 0;
+    virtual void print() = 0;
 };
 
 #endif

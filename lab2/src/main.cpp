@@ -173,5 +173,16 @@ int main(int argc, char **argv)
 
     save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
 
+    // vector<Move*> moves = MoveGenerator::get_first_neighbourhood_moves(paths);
+    vector<Move*> moves = MoveGenerator::get_second_neighbourhood_moves(paths);
+
+    for (auto move : moves) {
+        move->print();
+    }
+
+    for (auto move : moves) {
+        delete move;
+    }
+
     return 0;
 }
