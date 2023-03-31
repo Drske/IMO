@@ -8,8 +8,7 @@ using namespace std;
 class TSPSolver
 {
 public:
-    virtual TPaths solve(int start_vertex) {return this->paths;}
-    virtual TPaths solve(TPaths start_solution) {return this->paths;}
+    virtual TPaths solve(int start_vertex) = 0;
     
     void load_data(int [][N]);
     void add_vertex_to_path(int path_no, int vertex_id, int index = -1);

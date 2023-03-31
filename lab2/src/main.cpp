@@ -9,6 +9,9 @@
 
 #include "tsp_solver.h"
 #include "gc_tsp_solver.h"
+#include "rls_tsp_solver.h"
+#include "gls_tsp_solver.h"
+#include "sls_tsp_solver.h"
 #include "move_generator.h"
 
 using namespace std;
@@ -76,14 +79,19 @@ int main(int argc, char **argv)
 {
     map<string, TSPSolver *> solvers;
 
-    // solvers["nearest-neighbour"] = new NNSolver();
     solvers["greedy-cycle"] = new GCSolver();
-    // solvers["regrets"] = new RESolver();
+    solvers["random-walk"] = new RLSSolver();
+    solvers["greedy-ls"] = new GLSSolver();
+    solvers["steepest-ls"] = new SLSSolver();
 
     TSPSolver *solver;
+    TSPSolver *initial_solution_generator;
+
     string solver_name;
     string data_path;
     string output_path;
+    string neighbourhood;
+
     int start_vertex;
 
     if (cmd_option_provided("-solver", argc, argv))
@@ -96,7 +104,33 @@ int main(int argc, char **argv)
         cout << "No solver provided";
         return 1;
     }
+    if (cmd_option_provided("-init-sol-gen", argc, argv)){
+        solver_name = get_cmd_option("-init-sol-gen", argc, argv)
+        initial_solution_generator = solvers[solver_name];
+    }
+    else{
+        cout << "No initial solution generator provided";
+        return 1;
+    }
+    if (cmd_option_provided("-neigh", argc, argv)){
+        neighbourhood = get_cmd_option("-neight", argc, argv)
+    }
+    else{
+        cout << "No initial solution generator provided";
+        return 1;
+    }
+    if (cmd_option_provided("-start-vertex", argc, argv))
+    {
+        start_vertex = stoi(get_cmd_option("-start-vertex", argc, argv));
+    }
+    else
+    {
+        random_device rd;
+        mt19937 rng(rd());
+        uniform_int_distribution<int> uni(1, N);
 
+        start_vertex = uni(rng);
+    }
     if (cmd_option_provided("-in", argc, argv))
     {
         data_path = get_cmd_option("-in", argc, argv);
@@ -115,19 +149,6 @@ int main(int argc, char **argv)
     {
         cout << "No output file provided";
         return 1;
-    }
-
-    if (cmd_option_provided("-start-vertex", argc, argv))
-    {
-        start_vertex = stoi(get_cmd_option("-start-vertex", argc, argv));
-    }
-    else
-    {
-        random_device rd;
-        mt19937 rng(rd());
-        uniform_int_distribution<int> uni(1, N);
-
-        start_vertex = uni(rng);
     }
 
     ifstream file(data_path);
@@ -166,6 +187,8 @@ int main(int argc, char **argv)
             distance_matrix[i][j] = euclidean_distance(vertices[i], vertices[j]);
         }
     }
+
+    (*initial_solution_generator).load_data(distance_matrix)
 
     (*solver).load_data(distance_matrix);
     TPaths paths = (*solver).solve(start_vertex - 1);
