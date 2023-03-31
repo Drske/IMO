@@ -105,7 +105,7 @@ int main(int argc, char **argv)
         return 1;
     }
     if (cmd_option_provided("-init-sol-gen", argc, argv)){
-        solver_name = get_cmd_option("-init-sol-gen", argc, argv)
+        solver_name = get_cmd_option("-init-sol-gen", argc, argv);
         initial_solution_generator = solvers[solver_name];
     }
     else{
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
         return 1;
     }
     if (cmd_option_provided("-neigh", argc, argv)){
-        neighbourhood = get_cmd_option("-neight", argc, argv)
+        neighbourhood = get_cmd_option("-neight", argc, argv);
     }
     else{
         cout << "No initial solution generator provided";
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
         }
     }
 
-    (*initial_solution_generator).load_data(distance_matrix)
+    (*initial_solution_generator).load_data(distance_matrix);
 
     (*solver).load_data(distance_matrix);
     TPaths paths = (*solver).solve(start_vertex - 1);
