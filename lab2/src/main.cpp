@@ -8,9 +8,8 @@
 #include <nlohmann/json.hpp>
 
 #include "tsp_solver.h"
-#include "nn_tsp_solver.h"
 #include "gc_tsp_solver.h"
-#include "re_tsp_solver.h"
+#include "move_generator.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -77,9 +76,9 @@ int main(int argc, char **argv)
 {
     map<string, TSPSolver *> solvers;
 
-    solvers["nearest-neighbour"] = new NNSolver();
+    // solvers["nearest-neighbour"] = new NNSolver();
     solvers["greedy-cycle"] = new GCSolver();
-    solvers["regrets"] = new RESolver();
+    // solvers["regrets"] = new RESolver();
 
     TSPSolver *solver;
     string solver_name;
