@@ -9,9 +9,12 @@
 
 #include "tsp_solver.h"
 #include "gc_tsp_solver.h"
+
+#include "ls_tsp_solver.h"
 #include "rls_tsp_solver.h"
 #include "gls_tsp_solver.h"
 #include "sls_tsp_solver.h"
+
 #include "move_generator.h"
 
 using namespace std;
@@ -77,7 +80,8 @@ void save_results_to_json(string data_path, string output_path, string solver_na
 
 int main(int argc, char **argv)
 {
-    map<string, TSPSolver *> solvers, init_sol_gens;
+    map<string, TSPSolver *> init_sol_gens;
+    map<string, LSSolver *> solvers;
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -115,7 +119,7 @@ int main(int argc, char **argv)
         neighbourhood = get_cmd_option("-neigh", argc, argv);
     }
     else{
-        cout << "No initial solution generator provided";
+        cout << "No neighbourhood provided";
         return 1;
     }
     if (cmd_option_provided("-start-vertex", argc, argv))
@@ -193,26 +197,26 @@ int main(int argc, char **argv)
         initial_solution = (*init_sol_gen).solve(start_vertex - 1);
     }
     else if (init_sol_gen_name == "random-walk"){
-        (*init_sol_gen).set_iterations = 1;
+        (*init_sol_gen).set_iterations(1);
         initial_solution = (*init_sol_gen).solve();
     }
 
-    (*solver).load_data(distance_matrix);
-    TPaths paths = (*solver).solve(initial_solution);
-    TPathCost cost = (*solver).get_cost();
+    // (*solver).load_data(distance_matrix);
+    // TPaths paths = (*solver).solve(initial_solution);
+    // TPathCost cost = (*solver).get_cost();
 
-    save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
+    // save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
 
-    // vector<Move*> moves = MoveGenerator::get_first_neighbourhood_moves(paths);
-    vector<Move*> moves = MoveGenerator::get_second_neighbourhood_moves(paths);
+    // // vector<Move*> moves = MoveGenerator::get_first_neighbourhood_moves(paths);
+    // vector<Move*> moves = MoveGenerator::get_second_neighbourhood_moves(paths);
 
-    for (auto move : moves) {
-        move->print();
-    }
+    // for (auto move : moves) {
+    //     move->print();
+    // }
 
-    for (auto move : moves) {
-        delete move;
-    }
+    // for (auto move : moves) {
+    //     delete move;
+    // }
 
     return 0;
 }
