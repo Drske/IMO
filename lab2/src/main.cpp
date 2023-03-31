@@ -6,6 +6,7 @@
 #include <math.h>
 #include <random>
 #include <nlohmann/json.hpp>
+#include <cstdio>
 
 #include "tsp_solver.h"
 #include "gc_tsp_solver.h"
@@ -18,7 +19,7 @@
 #include "move_generator.h"
 
 using namespace std;
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 bool cmd_option_provided(string option, int argc, char **argv)
 {
@@ -80,11 +81,10 @@ void save_results_to_json(string data_path, string output_path, string solver_na
 
 int main(int argc, char **argv)
 {
-    map<string, TSPSolver *> init_sol_gens;
-    map<string, LSSolver *> solvers;
+    map<string, TSPSolver *> solvers;
 
-    init_sol_gens["greedy-cycle"] = new GCSolver();
-    init_sol_gens["random-walk"] = new RLSSolver();
+    solvers["greedy-cycle"] = new GCSolver();
+    solvers["random-walk"] = new RLSSolver();
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
 
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     string output_path;
     string neighbourhood;
 
-    int start_vertex;
+    int start_vertex, iterations;
 
     if (cmd_option_provided("-solver", argc, argv))
     {
@@ -121,6 +121,12 @@ int main(int argc, char **argv)
     else{
         cout << "No neighbourhood provided";
         return 1;
+    }
+    if (cmd_option_provided("-iterations", argc, argv)){
+        iterations = get_cmd_option("-iterations", argc, argv);
+    }
+    else{
+        iterations = 1;
     }
     if (cmd_option_provided("-start-vertex", argc, argv))
     {
@@ -191,32 +197,22 @@ int main(int argc, char **argv)
         }
     }
 
-    TPaths initial_solution;
+    
     (*init_sol_gen).load_data(distance_matrix);
-    if (init_sol_gen_name == "greedy-cycle"){
-        initial_solution = (*init_sol_gen).solve(start_vertex - 1);
-    }
-    else if (init_sol_gen_name == "random-walk"){
-        (*init_sol_gen).set_iterations(1);
-        initial_solution = (*init_sol_gen).solve();
-    }
+    (*init_sol_gen).set_start_vertex(start_vertex);
+    (*init_sol_gen).set_iterations(1);
 
-    // (*solver).load_data(distance_matrix);
-    // TPaths paths = (*solver).solve(initial_solution);
-    // TPathCost cost = (*solver).get_cost();
+    TPaths initial_solution = (*init_sol_gen).solve();
+    TPathCost initial_solution_cost = (*init_sol_gen).get_cost();
 
-    // save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
+    (*solver).load_data(distance_matrix);
+    (*solver).set_iterations(iterations);
+    (*solver).set_neighbourhood(neighbourhood);
+    (*solver).set_initial_solution(initial_solution);
 
-    // // vector<Move*> moves = MoveGenerator::get_first_neighbourhood_moves(paths);
-    // vector<Move*> moves = MoveGenerator::get_second_neighbourhood_moves(paths);
+    TPaths paths = (*solver).solve();
+    TPathCost cost = (*solver).get_cost();
 
-    // for (auto move : moves) {
-    //     move->print();
-    // }
-
-    // for (auto move : moves) {
-    //     delete move;
-    // }
-
+    save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
     return 0;
 }

@@ -8,19 +8,25 @@ using namespace std;
 class TSPSolver
 {
 public:
-    virtual TPaths solve() {return this->paths;}
-    virtual TPaths solve(int start_vertex) {return this->paths;}
-    virtual TPaths solve(TPaths start_solution) {return this->paths;}
+    virtual TPaths solve() = 0;
     
     void load_data(int [][N]);
     void add_vertex_to_path(int path_no, int vertex_id, int index = -1);
     int find_furthest_vertex(int vertex_id);
     int find_nearest_vertex(int vertex_id);
-    TPathCost get_cost();
+    
+
     void set_iterations(int);
+    void set_neighbourhood(string);
+    void set_start_vertex(int);
+    void set_initial_solution(TPaths);
+
+    TPathCost get_cost();
 
 protected:
     int iterations;
+    string neighbourhood;
+    int start_vertex;
     int distance_matrix[N][N];
     bool used_vertices[N] = { false };
     TPaths paths;

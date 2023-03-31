@@ -5,7 +5,7 @@
 
 class SLSSolver : public LSSolver
 {
-    TPaths solve(TPaths start_solution);
+    TPaths solve();
 };
 
 #endif

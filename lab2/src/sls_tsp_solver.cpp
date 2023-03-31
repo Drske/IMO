@@ -1,6 +1,6 @@
 #include "sls_tsp_solver.h"
 
-TPaths SLSSolver::solve(TPaths start_solution) {
+TPaths SLSSolver::solve() {
     // TODO
     return this->paths;
 }

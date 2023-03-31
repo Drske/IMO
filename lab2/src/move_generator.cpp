@@ -24,7 +24,7 @@ vector<Move*> MoveGenerator::get_second_neighbourhood_moves(TPaths paths) {
     return moves;
 }
 
-void MoveGenerator::add_vertex_moves_from_path(vector<int> path, int path_id, vector<Move*>& moves) {
+void MoveGenerator::add_vertex_moves_from_path(TPath path, int path_id, vector<Move*>& moves) {
     pair<int, int> path_ids(path_id, path_id);
     for (int i = 0; i < path.size() - 1; i++) {
         for (int j = i + 1; j < path.size(); j++) {
@@ -34,7 +34,7 @@ void MoveGenerator::add_vertex_moves_from_path(vector<int> path, int path_id, ve
     }
 }
 
-void MoveGenerator::add_edge_moves_from_path(vector<int> path, int path_id, vector<Move*>& moves) {
+void MoveGenerator::add_edge_moves_from_path(TPath path, int path_id, vector<Move*>& moves) {
     for (int i = 0; i < path.size() - 1; i++) {
         TEdge edge1_ids(i, i + 1);
         

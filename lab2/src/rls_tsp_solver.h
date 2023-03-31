@@ -5,7 +5,7 @@
 
 class RLSSolver : public LSSolver
 {
-    public:
+public:
     TPaths solve();   
 };
 

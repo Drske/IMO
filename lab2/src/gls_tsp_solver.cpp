@@ -1,6 +1,6 @@
 #include "gls_tsp_solver.h"
 
-TPaths GLSSolver::solve(TPaths start_solution) {
+TPaths GLSSolver::solve() {
     // TODO
     return this->paths;
 }

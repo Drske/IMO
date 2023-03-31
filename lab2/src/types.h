@@ -8,7 +8,8 @@
 
 using namespace std;
 
-typedef pair<vector<int>, vector<int> > TPaths;
+typedef vector<int> TPath;
+typedef pair<TPath, TPath> TPaths;
 typedef pair<int,int> TPathLength;
 typedef pair<int,int> TPathCost;
 

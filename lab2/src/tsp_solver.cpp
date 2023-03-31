@@ -1,4 +1,7 @@
+#include <string>
 #include "tsp_solver.h"
+
+using namespace std;
 
 void TSPSolver::load_data(int distance_matrix[][N]){
     for (int i = 0; i < N; i++){
@@ -14,6 +17,18 @@ TPathCost TSPSolver::get_cost(){
 
 void TSPSolver::set_iterations(int iterations){
     this->iterations = iterations;
+}
+
+void TSPSolver::set_neighbourhood(string neighbourhood){
+    this->neighbourhood = neighbourhood;
+}
+
+void TSPSolver::set_start_vertex(int start_vertex){
+    this->start_vertex = start_vertex;
+}
+
+void TSPSolver::set_initial_solution(TPaths initial_solution){
+    this->paths = initial_solution;
 }
 
 void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
