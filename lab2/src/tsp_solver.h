@@ -2,6 +2,7 @@
 #define TSP_SOLVER_H
 
 #include "types.h"
+#include <string>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     void set_neighbourhood(string);
     void set_start_vertex(int);
     void set_initial_solution(TPaths);
+    void set_initial_cost(TPathCost);
 
     TPathCost get_cost();
 

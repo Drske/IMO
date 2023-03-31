@@ -31,6 +31,10 @@ void TSPSolver::set_initial_solution(TPaths initial_solution){
     this->paths = initial_solution;
 }
 
+void TSPSolver::set_initial_cost(TPathCost intitial_solution_cost){
+    this->path_cost = intitial_solution_cost;
+}
+
 void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
     if (path_no == 1) {
         if ((index == -1) || index == this->path_length.first)

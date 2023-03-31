@@ -19,7 +19,7 @@
 #include "move_generator.h"
 
 using namespace std;
-// using json = nlohmann::json;
+using json = nlohmann::json;
 
 bool cmd_option_provided(string option, int argc, char **argv)
 {
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     }
     if (cmd_option_provided("-init-sol-gen", argc, argv)){
         init_sol_gen_name = get_cmd_option("-init-sol-gen", argc, argv);
-        init_sol_gen = init_sol_gens[solver_name];
+        init_sol_gen = solvers[solver_name];
     }
     else{
         cout << "No initial solution generator provided";
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
         return 1;
     }
     if (cmd_option_provided("-iterations", argc, argv)){
-        iterations = get_cmd_option("-iterations", argc, argv);
+        iterations = stoi(get_cmd_option("-iterations", argc, argv));
     }
     else{
         iterations = 1;
@@ -209,6 +209,7 @@ int main(int argc, char **argv)
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_initial_solution(initial_solution);
+    (*solver).set_initial_cost(initial_solution_cost);
 
     TPaths paths = (*solver).solve();
     TPathCost cost = (*solver).get_cost();
