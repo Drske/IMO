@@ -18,4 +18,7 @@ typedef TVertex TVertices[N];
 typedef pair<int,int> TInsertionCost;
 typedef vector<TInsertionCost> TInsertionCosts;
 
+typedef pair<int,int> TEdge;
+typedef pair<TEdge, TEdge> TEdges;
+
 #endif
