@@ -77,7 +77,7 @@ void save_results_to_json(string data_path, string output_path, string solver_na
 
 int main(int argc, char **argv)
 {
-    map<string, TSPSolver *> solvers; init_sol_gens;
+    map<string, TSPSolver *> solvers, init_sol_gens;
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -187,18 +187,18 @@ int main(int argc, char **argv)
         }
     }
 
+    TPaths initial_solution;
     (*init_sol_gen).load_data(distance_matrix);
-
     if (init_sol_gen_name == "greedy-cycle"){
-        (*init_sol_gen).solve(start_vertex);
+        initial_solution = (*init_sol_gen).solve(start_vertex - 1);
     }
     else if (init_sol_gen_name == "random-walk"){
         (*init_sol_gen).set_iterations = 1;
-        (*init_sol_gen).solve();
+        initial_solution = (*init_sol_gen).solve();
     }
 
     (*solver).load_data(distance_matrix);
-    TPaths paths = (*solver).solve(start_vertex - 1);
+    TPaths paths = (*solver).solve(initial_solution);
     TPathCost cost = (*solver).get_cost();
 
     save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
