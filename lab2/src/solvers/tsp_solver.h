@@ -1,7 +1,7 @@
 #ifndef TSP_SOLVER_H
 #define TSP_SOLVER_H
 
-#include "types.h"
+#include "../types.h"
 #include <string>
 
 using namespace std;

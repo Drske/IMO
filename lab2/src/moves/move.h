@@ -1,7 +1,7 @@
 #ifndef MOVE_SOLVER_H
 #define MOVE_SOLVER_H
 
-#include "types.h"
+#include "../types.h"
 
 using namespace std;
 

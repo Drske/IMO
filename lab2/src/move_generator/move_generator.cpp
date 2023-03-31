@@ -1,5 +1,5 @@
-#include "edge_move.h"
-#include "vertex_move.h"
+#include "../moves/edge_move.h"
+#include "../moves/vertex_move.h"
 #include "move_generator.h"
 
 vector<Move*> MoveGenerator::get_first_neighbourhood_moves(TPaths paths) {

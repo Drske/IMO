@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "tsp_solver.h"
+#include "../tsp_solver.h"
 
 using namespace std;
 

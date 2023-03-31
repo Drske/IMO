@@ -1,6 +1,5 @@
 #include <string>
 #include "tsp_solver.h"
-
 using namespace std;
 
 void TSPSolver::load_data(int distance_matrix[][N]){

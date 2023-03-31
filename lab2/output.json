@@ -1,0 +1,13 @@
+{
+    "cost": {
+        "first": 0,
+        "second": 0
+    },
+    "instance": "kroA100.tsp",
+    "path": {
+        "first": [],
+        "second": []
+    },
+    "solver": "greedy-ls",
+    "start-vertex": 1
+}

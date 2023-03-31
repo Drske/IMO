@@ -1,8 +1,8 @@
 #ifndef MOVE_GENERATOR_H
 #define MOVE_GENERATOR_H
 
-#include "types.h"
-#include "move.h"
+#include "../types.h"
+#include "../moves/move.h"
 
 class MoveGenerator
 {

@@ -8,15 +8,15 @@
 #include <nlohmann/json.hpp>
 #include <cstdio>
 
-#include "tsp_solver.h"
-#include "gc_tsp_solver.h"
+#include "solvers/tsp_solver.h"
+#include "solvers/gc_tsp_solver.h"
 
-#include "ls_tsp_solver.h"
-#include "rls_tsp_solver.h"
-#include "gls_tsp_solver.h"
-#include "sls_tsp_solver.h"
+#include "solvers/lssolvers/ls_tsp_solver.h"
+#include "solvers/lssolvers/rls_tsp_solver.h"
+#include "solvers/lssolvers/gls_tsp_solver.h"
+#include "solvers/lssolvers/sls_tsp_solver.h"
 
-#include "move_generator.h"
+#include "move_generator/move_generator.h"
 
 using namespace std;
 using json = nlohmann::json;
