@@ -77,17 +77,16 @@ void save_results_to_json(string data_path, string output_path, string solver_na
 
 int main(int argc, char **argv)
 {
-    map<string, TSPSolver *> solvers;
+    map<string, TSPSolver *> solvers; init_sol_gens;
 
-    solvers["greedy-cycle"] = new GCSolver();
-    solvers["random-walk"] = new RLSSolver();
+    init_sol_gens["greedy-cycle"] = new GCSolver();
+    init_sol_gens["random-walk"] = new RLSSolver();
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
 
-    TSPSolver *solver;
-    TSPSolver *initial_solution_generator;
+    TSPSolver *solver, *init_sol_gen;
 
-    string solver_name;
+    string solver_name, init_sol_gen_name;
     string data_path;
     string output_path;
     string neighbourhood;
@@ -105,15 +104,15 @@ int main(int argc, char **argv)
         return 1;
     }
     if (cmd_option_provided("-init-sol-gen", argc, argv)){
-        solver_name = get_cmd_option("-init-sol-gen", argc, argv);
-        initial_solution_generator = solvers[solver_name];
+        init_sol_gen_name = get_cmd_option("-init-sol-gen", argc, argv);
+        init_sol_gen = init_sol_gens[solver_name];
     }
     else{
         cout << "No initial solution generator provided";
         return 1;
     }
     if (cmd_option_provided("-neigh", argc, argv)){
-        neighbourhood = get_cmd_option("-neight", argc, argv);
+        neighbourhood = get_cmd_option("-neigh", argc, argv);
     }
     else{
         cout << "No initial solution generator provided";
@@ -188,7 +187,15 @@ int main(int argc, char **argv)
         }
     }
 
-    (*initial_solution_generator).load_data(distance_matrix);
+    (*init_sol_gen).load_data(distance_matrix);
+
+    if (init_sol_gen_name == "greedy-cycle"){
+        (*init_sol_gen).solve(start_vertex);
+    }
+    else if (init_sol_gen_name == "random-walk"){
+        (*init_sol_gen).set_iterations = 1;
+        (*init_sol_gen).solve();
+    }
 
     (*solver).load_data(distance_matrix);
     TPaths paths = (*solver).solve(start_vertex - 1);
