@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     }
     if (cmd_option_provided("-init-sol-gen", argc, argv)){
         init_sol_gen_name = get_cmd_option("-init-sol-gen", argc, argv);
-        init_sol_gen = solvers[solver_name];
+        init_sol_gen = solvers[init_sol_gen_name];
     }
     else{
         cout << "No initial solution generator provided";
@@ -198,6 +198,9 @@ int main(int argc, char **argv)
     }
 
     
+    printf("Init sol: %s\n", typeid(*init_sol_gen).name());
+    printf("Solver: %s\n", typeid(*solver).name());
+    
     (*init_sol_gen).load_data(distance_matrix);
     (*init_sol_gen).set_start_vertex(start_vertex);
     (*init_sol_gen).set_iterations(1);
@@ -206,9 +209,9 @@ int main(int argc, char **argv)
     TPathCost initial_solution_cost = (*init_sol_gen).get_cost();
 
     (*solver).load_data(distance_matrix);
+    (*solver).set_initial_solution(initial_solution);
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
-    (*solver).set_initial_solution(initial_solution);
     (*solver).set_initial_cost(initial_solution_cost);
 
     TPaths paths = (*solver).solve();
