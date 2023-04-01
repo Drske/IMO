@@ -13,12 +13,15 @@ for filename in os.listdir(DIR_DATA):
         continue
 
     for ls_solver in ["greedy-ls", "steepest-ls"]:
-        for neighbourhood in ["N1", "N2"]:
-            for init_sol_gen in ["greedy-cycle", "random-walk"]:
+        for init_sol_gen in ["greedy-cycle", "random-walk"]:
+            for neighbourhood in ["N1", "N2"]:
                 for start_vertex in range(1, 101):
                     instance = filename.split(".")[0]
                     output_file_path = os.path.join(DIR_RESULTS, "{}-{}-{}-{}-{}.json".format(
-                        instance, ls_solver, neighbourhood, init_sol_gen, start_vertex))
+                        instance, ls_solver, init_sol_gen, neighbourhood, start_vertex))
+                    
+                    print("Running: ", instance, ls_solver, init_sol_gen, neighbourhood, start_vertex)
+                    
                     subprocess.run([
                         os.path.join("..", "main.out"),
                         "-solver", ls_solver,

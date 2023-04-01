@@ -225,9 +225,6 @@ int main(int argc, char **argv)
         }
     }
 
-    printf("Init sol: %s\n", typeid(*init_sol_gen).name());
-    printf("Solver: %s\n", typeid(*solver).name());
-
     (*init_sol_gen).load_data(distance_matrix);
     (*init_sol_gen).set_start_vertex(start_vertex - 1);
     (*init_sol_gen).set_iterations(1);
@@ -240,6 +237,7 @@ int main(int argc, char **argv)
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_initial_cost(initial_cost);
+    (*solver).set_start_vertex(start_vertex);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();

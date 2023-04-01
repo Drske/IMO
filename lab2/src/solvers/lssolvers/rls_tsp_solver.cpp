@@ -34,8 +34,7 @@ TPaths RLSSolver::solve()
     printf("Solving Random Walk Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    default_random_engine rnd_e(seed);
+    default_random_engine rnd_e(this->start_vertex);
 
     if (this->path_cost.first == 0 && this->path_cost.second == 0)
     {

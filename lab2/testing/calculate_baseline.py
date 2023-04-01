@@ -21,7 +21,7 @@ for filename in os.listdir(DIR_DATA):
         subprocess.run([
             os.path.join("..", "main.out"),
             "-solver", "random-walk",
-            "-init-sol-gen", "greedy-cycle",
+            "-init-sol-gen", "random-walk",
             "-neigh", neighbourhood,
             "-start-vertex", '1',
             "-iterations", str(ITERATIONS),
