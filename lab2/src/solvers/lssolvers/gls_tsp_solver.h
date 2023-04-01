@@ -5,6 +5,7 @@
 
 class GLSSolver : public LSSolver
 {
+public:
     TPaths solve();
 };
 

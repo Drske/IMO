@@ -50,9 +50,32 @@ TPaths SLSSolver::solve()
             printf("Best delta: %d %d\n", best_delta.first, best_delta.second);
             printf("Best move: ");
             best_move->print();
+
+            printf("BEFORE APPLY\nP1: ");
+            for (auto v : this->paths.first){
+                printf("%d ", v);
+            }
+            printf("\nP2: ");
+            for (auto v : this->paths.second){
+                printf("%d ", v);
+            }
+            printf("\n");
+
             best_move->apply(this->paths);
+
+            printf("AFTER APPLY\nP1: ");
+            for (auto v : this->paths.first){
+                printf("%d ", v);
+            }
+            printf("\nP2: ");
+            for (auto v : this->paths.second){
+                printf("%d ", v);
+            }
+            printf("\n");
+
             this->path_cost.first += best_delta.first;
             this->path_cost.second += best_delta.second;
+            printf("Current cost: %d, %d\n", this->path_cost.first, this->path_cost.second);
             applied=true;
         }
     }
