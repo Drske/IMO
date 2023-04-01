@@ -24,9 +24,9 @@ void RLSSolver::generate_fully_random_solution(default_random_engine rnd_e)
         this->path_cost.first += distance_matrix[vertices[i - 1]][vertices[i]];
         this->path_cost.second += distance_matrix[vertices[i - 1 + N / 2]][vertices[i + N / 2]];
     }
-
+    
     this->path_cost.first += distance_matrix[this->paths.first[0]][this->paths.first[N / 2 - 1]];
-    this->path_cost.first += distance_matrix[this->paths.first[N / 2]][this->paths.first[N - 1]];
+    this->path_cost.second += distance_matrix[this->paths.second[0]][this->paths.second[N / 2 - 1]];
 }
 
 TPaths RLSSolver::solve()

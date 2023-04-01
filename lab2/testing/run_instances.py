@@ -20,7 +20,7 @@ for filename in os.listdir(DIR_DATA):
                     output_file_path = os.path.join(DIR_RESULTS, "{}-{}-{}-{}-{}.json".format(
                         instance, ls_solver, init_sol_gen, neighbourhood, start_vertex))
                     
-                    print("Running: ", instance, ls_solver, init_sol_gen, neighbourhood, start_vertex)
+                    print("Running:", instance, ls_solver, init_sol_gen, neighbourhood, start_vertex)
                     
                     subprocess.run([
                         os.path.join("..", "main.out"),

@@ -1,7 +1,7 @@
 #include "gc_tsp_solver.h"
 
 TPaths GCSolver::solve(){
-    printf("Solving greedy cycle\n");
+    printf("Solving Greedy Cycle\n");
 
     int start_vertex2 = this->find_furthest_vertex(this->start_vertex);
 

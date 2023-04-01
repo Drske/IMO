@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 {
     map<string, TSPSolver *> solvers;
     map<string, TSPSolver *> init_sol_gens;
-    
+
     solvers["random-walk"] = new RLSSolver();
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
@@ -247,5 +247,6 @@ int main(int argc, char **argv)
     TPathCost cost = (*solver).get_cost();
 
     save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration);
+
     return 0;
 }
