@@ -4,48 +4,76 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-result = json.load(open(sys.argv[2]))
+def plot_results(X1, Y1, X2, Y2, title, fig_path):
+    fig, ax = plt.subplots()
 
-cost1 = result['cost']['first']
-cost2 = result['cost']['second']
-instance = result['instance']
-solver = result['solver']
-start_vertex = result['start-vertex']
+    ax.scatter(X1, Y1, color='blue', s=100)
+    ax.scatter(X2, Y2, color='red', s=100)
 
-path1 = result['path']['first']
-path2 = result['path']['second']
+    ax.plot(X1, Y1, color='blue')
+    ax.plot(X2, Y2, color='red')
 
-df = pd.read_csv(sys.argv[1])
+    ax.tick_params(left=False, labelleft=False, labelbottom=False, bottom=False)
 
-ids = df['Node'].values
-X = df['X'].values
-Y = df['Y'].values
+    ax.set_title(title, wrap='true', fontsize=12)
 
-fig, ax = plt.subplots()
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
 
-X1 = np.append(X[path1], X[path1][0])
-Y1 = np.append(Y[path1], Y[path1][0])
-X2 = np.append(X[path2], X[path2][0])
-Y2 = np.append(Y[path2], Y[path2][0])
+    for i, id in enumerate(ids):
+        ax.annotate(id-1, (X[i], Y[i]), fontsize=6, ha='center', va='center')
 
-ax.scatter(X1, Y1, color='blue', s=100)
-ax.scatter(X2, Y2, color='red', s=100)
+    fig.tight_layout()
+    plt.savefig(fig_path)
 
-ax.plot(X1, Y1, color='blue')
-ax.plot(X2, Y2, color='red')
+if __name__ == '__main__':
+    # Load TSP instance
+    df = pd.read_csv(sys.argv[1])
 
-ax.tick_params(left=False, labelleft=False, labelbottom=False, bottom=False)
+    ids = df['Node'].values
+    X = df['X'].values
+    Y = df['Y'].values
 
-ax.set_title(f'solver = {solver} \n cost1 = {cost1} \n cost2 = {cost2} \n instance = {instance} \n start_vertex = {start_vertex}', wrap='true')
+    # Load JSON data
+    result = json.load(open(sys.argv[2]))
 
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
+    costs = (result['cost']['first'], result['cost']['second'])
+    duration = result['duration']
+    initial_costs = (result['initial-cost']['first'], result['initial-cost']['second'])
 
-for i, id in enumerate(ids):
-    ax.annotate(id-1, (X[i], Y[i]), fontsize=6, ha='center', va='center')
+    initital_solver = result['initial-solver']
+    instance = result['instance']
+    neighbourhood = result['neighbourhood']
+    solver = result['solver']
+    start_vertex = result['start-vertex']
 
-fig.tight_layout()
+    initial_paths = (result['initial-path']['first'], result['initial-path']['second'])
+    paths = (result['path']['first'], result['path']['second'])
 
-plt.savefig(sys.argv[3])
-# plt.show()
+    # Plot results
+    X1 = np.append(X[paths[0]], X[paths[0]][0])
+    Y1 = np.append(Y[paths[0]], Y[paths[0]][0])
+    X2 = np.append(X[paths[1]], X[paths[1]][0])
+    Y2 = np.append(Y[paths[1]], Y[paths[1]][0])
 
+    result_title = f"""
+            solver = {solver}, initial solver = {initital_solver}
+            costs = ({costs[0]}, {costs[1]})
+            instance = {instance}, neighbourhood = {neighbourhood}
+            duration = {duration} ms"""
+
+    plot_results(X1, Y1, X2, Y2, result_title, sys.argv[3])
+
+    # Plot initial solution
+    X1_initial = np.append(X[initial_paths[0]], X[initial_paths[0]][0])
+    Y1_initial = np.append(Y[initial_paths[0]], Y[initial_paths[0]][0])
+    X2_initial = np.append(X[initial_paths[1]], X[initial_paths[1]][0])
+    Y2_initial = np.append(Y[initial_paths[1]], Y[initial_paths[1]][0])
+
+    initial_result_title = f"""
+            solver = {initital_solver}
+            costs = ({initial_costs[0]}, {initial_costs[1]})
+            instance = {instance}
+            start_vertex = {start_vertex}"""
+
+    plot_results(X1_initial, Y1_initial, X2_initial, Y2_initial, initial_result_title, sys.argv[4])
