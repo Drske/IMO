@@ -8,13 +8,13 @@ using namespace std;
 class EdgeMove : public Move
 {
 public:
-    EdgeMove(int path_id, TEdges edge_ids);
-    void apply(TPaths* paths);
+    EdgeMove(int path_id, TEdges edge_idxs);
+    void apply(TPaths &paths);
     void print();
-    TPathCost get_cost_delta(TPaths paths);
+    TPathCost get_cost_delta(TPaths paths, int distance_matrix[][N]);
 private:
     int path_id;
-    TEdges edge_ids;
+    TEdges edge_idxs;
 };
 
 #endif
