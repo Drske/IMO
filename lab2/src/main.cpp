@@ -101,11 +101,14 @@ void save_results_to_json(string data_path,
 int main(int argc, char **argv)
 {
     map<string, TSPSolver *> solvers;
-
-    solvers["greedy-cycle"] = new GCSolver();
+    map<string, TSPSolver *> init_sol_gens;
+    
     solvers["random-walk"] = new RLSSolver();
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
+
+    init_sol_gens["greedy-cycle"] = new GCSolver();
+    init_sol_gens["random-walk"] = new RLSSolver();
 
     TSPSolver *solver, *init_sol_gen;
 
@@ -129,7 +132,7 @@ int main(int argc, char **argv)
     if (cmd_option_provided("-init-sol-gen", argc, argv))
     {
         init_sol_gen_name = get_cmd_option("-init-sol-gen", argc, argv);
-        init_sol_gen = solvers[init_sol_gen_name];
+        init_sol_gen = init_sol_gens[init_sol_gen_name];
     }
     else
     {
@@ -222,9 +225,6 @@ int main(int argc, char **argv)
         }
     }
 
-    printf("Init sol: %s\n", typeid(*init_sol_gen).name());
-    printf("Solver: %s\n", typeid(*solver).name());
-
     (*init_sol_gen).load_data(distance_matrix);
     (*init_sol_gen).set_start_vertex(start_vertex - 1);
     (*init_sol_gen).set_iterations(1);
@@ -237,13 +237,12 @@ int main(int argc, char **argv)
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_initial_cost(initial_cost);
+    (*solver).set_start_vertex(start_vertex);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();
     high_resolution_clock::time_point stop = high_resolution_clock::now();
     double duration = duration_cast<milliseconds>(stop - start).count();
-
-    printf("DUPA: %f\n", duration);
 
     TPathCost cost = (*solver).get_cost();
 

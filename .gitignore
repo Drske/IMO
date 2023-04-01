@@ -37,3 +37,8 @@
 
 # VS Code
 *.vscode*
+
+# Stats
+*/results/*.json
+*/plots/*.pdf
+*/baselines/*.json

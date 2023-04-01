@@ -26,8 +26,8 @@ TPaths SLSSolver::solve()
 
     bool applied = true;
     Move *best_move;
-    TPathCost best_delta = make_pair(INT_MAX, INT_MAX);
-
+    TPathCost best_delta;
+    
     while (applied)
     {
         applied = false;
@@ -47,9 +47,6 @@ TPaths SLSSolver::solve()
 
         if (best_delta.first + best_delta.second < 0)
         {
-            printf("Best delta: %d %d\n", best_delta.first, best_delta.second);
-            printf("Best move: ");
-            best_move->print();
             best_move->apply(this->paths);
             this->path_cost.first += best_delta.first;
             this->path_cost.second += best_delta.second;
