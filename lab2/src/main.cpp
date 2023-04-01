@@ -56,7 +56,7 @@ int euclidean_distance(TVertex A, TVertex B)
     return round(dist);
 }
 
-void save_results_to_json(string data_path, string output_path, string solver_name, TPaths paths, TPathCost cost, int start_vertex)
+void save_results_to_json(string data_path, string output_path, string solver_name, string init_sol_gen_name, TPaths paths, TPaths initial_solution, TPathCost cost, int start_vertex)
 {
     size_t pos = data_path.find_last_of("/");
     string instance = data_path.substr(pos+1);
