@@ -35,6 +35,7 @@ TPaths GLSSolver::solve() {
                 (*it)->apply(this->paths);
                 this->path_cost.first += delta.first;
                 this->path_cost.second += delta.second;
+                applied = true;
                 break;
             }
         }

@@ -5,8 +5,8 @@
 #include <fstream>
 #include <math.h>
 #include <random>
+#include <chrono>
 #include <nlohmann/json.hpp>
-#include <cstdio>
 
 #include "solvers/tsp_solver.h"
 #include "solvers/gc_tsp_solver.h"
@@ -19,6 +19,7 @@
 #include "move_generator/move_generator.h"
 
 using namespace std;
+using namespace std::chrono;
 using json = nlohmann::json;
 
 bool cmd_option_provided(string option, int argc, char **argv)
@@ -56,23 +57,41 @@ int euclidean_distance(TVertex A, TVertex B)
     return round(dist);
 }
 
-void save_results_to_json(string data_path, string output_path, string solver_name, string init_sol_gen_name, TPaths paths, TPaths initial_solution, TPathCost cost, int start_vertex)
+void save_results_to_json(string data_path,
+                          string output_path,
+                          string solver_name,
+                          string init_sol_gen_name,
+                          string neighbourhood,
+                          int start_vertex,
+                          TPaths paths,
+                          TPaths initial_solution,
+                          TPathCost cost,
+                          TPathCost initial_cost,
+                          double duration)
+
 {
     size_t pos = data_path.find_last_of("/");
-    string instance = data_path.substr(pos+1);
-    
+    string instance = data_path.substr(pos + 1);
+
     json j;
     j["instance"] = instance;
     j["solver"] = solver_name;
+    j["initial-solver"] = init_sol_gen_name;
+    j["neighbourhood"] = neighbourhood;
     j["start-vertex"] = start_vertex;
+    j["duration"] = duration;
     j["cost"] = {
         {"first", cost.first},
-        {"second", cost.second}
-    };
+        {"second", cost.second}};
+    j["initial-cost"] = {
+        {"first", initial_cost.first},
+        {"second", initial_cost.second}};
     j["path"] = {
         {"first", paths.first},
-        {"second", paths.second}
-    };
+        {"second", paths.second}};
+    j["initial-path"] = {
+        {"first", initial_solution.first},
+        {"second", initial_solution.second}};
 
     ofstream ofs(output_path);
     ofs << j.dump(4);
@@ -107,25 +126,31 @@ int main(int argc, char **argv)
         cout << "No solver provided";
         return 1;
     }
-    if (cmd_option_provided("-init-sol-gen", argc, argv)){
+    if (cmd_option_provided("-init-sol-gen", argc, argv))
+    {
         init_sol_gen_name = get_cmd_option("-init-sol-gen", argc, argv);
         init_sol_gen = solvers[init_sol_gen_name];
     }
-    else{
+    else
+    {
         cout << "No initial solution generator provided";
         return 1;
     }
-    if (cmd_option_provided("-neigh", argc, argv)){
+    if (cmd_option_provided("-neigh", argc, argv))
+    {
         neighbourhood = get_cmd_option("-neigh", argc, argv);
     }
-    else{
+    else
+    {
         cout << "No neighbourhood provided";
         return 1;
     }
-    if (cmd_option_provided("-iterations", argc, argv)){
+    if (cmd_option_provided("-iterations", argc, argv))
+    {
         iterations = stoi(get_cmd_option("-iterations", argc, argv));
     }
-    else{
+    else
+    {
         iterations = 1;
     }
     if (cmd_option_provided("-start-vertex", argc, argv))
@@ -197,26 +222,29 @@ int main(int argc, char **argv)
         }
     }
 
-    
     printf("Init sol: %s\n", typeid(*init_sol_gen).name());
     printf("Solver: %s\n", typeid(*solver).name());
-    
+
     (*init_sol_gen).load_data(distance_matrix);
-    (*init_sol_gen).set_start_vertex(start_vertex);
+    (*init_sol_gen).set_start_vertex(start_vertex - 1);
     (*init_sol_gen).set_iterations(1);
 
     TPaths initial_solution = (*init_sol_gen).solve();
-    TPathCost initial_solution_cost = (*init_sol_gen).get_cost();
+    TPathCost initial_cost = (*init_sol_gen).get_cost();
 
     (*solver).load_data(distance_matrix);
     (*solver).set_initial_solution(initial_solution);
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
-    (*solver).set_initial_cost(initial_solution_cost);
+    (*solver).set_initial_cost(initial_cost);
 
+    high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();
+    high_resolution_clock::time_point stop = high_resolution_clock::now();
+    double duration = duration_cast<microseconds>(stop - start).count();
+
     TPathCost cost = (*solver).get_cost();
 
-    save_results_to_json(data_path, output_path, solver_name, paths, cost, start_vertex);
+    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost,duration);
     return 0;
 }
