@@ -45,7 +45,7 @@ TPaths SLSSolver::solve()
             }
         }
 
-        if (best_delta.first + best_delta.second)
+        if (best_delta.first + best_delta.second < 0)
         {
             printf("Best delta: %d %d\n", best_delta.first, best_delta.second);
             printf("Best move: ");
