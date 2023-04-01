@@ -27,6 +27,9 @@ int VertexMove::get_cost(TPath path, int vertex_idx, int distance_matrix[][N]) {
 
     int v1 = path[prev_idx], v2 = path[vertex_idx], v3 = path[next_idx];
 
+    // printf("v1 = %d, v2 = %d, v3 = %d\n", v1, v2, v3);
+    // printf("v1-v2 = %d, v2-v3 = %d\n", distance_matrix[v1][v2], distance_matrix[v2][v3]);
+
     return distance_matrix[v1][v2] + distance_matrix[v2][v3];
 }
 
@@ -42,7 +45,7 @@ int VertexMove::get_new_cost(TPath path, pair<int, int> vertex_idxs, int distanc
     int v1 = path[v1_idx], v1_prev = path[v1_prev_idx], v1_next = path[v1_next_idx];
     int v2 = path[v2_idx], v2_prev = path[v2_prev_idx], v2_next = path[v2_next_idx];
 
-    if (abs(v1_idx - v2_idx) == 1) 
+    if (abs(v1_idx - v2_idx) == 1 || (v1_idx == 0 && v2_idx == (path.size() - 1))) 
         return distance_matrix[v1_prev][v2] + distance_matrix[v2][v1] + distance_matrix[v1][v2_next];
 
     return distance_matrix[v1_prev][v2] + distance_matrix[v2][v1_next] + 
@@ -83,18 +86,17 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
         int v1 = paths.first[v1_idx];
         int v2 = paths.first[v2_idx];
 
-        if (abs(v2_idx - v1_idx) == 1)
+        if (abs(v2_idx - v1_idx) == 1 || (v1_idx == 0 && v2_idx == (paths.first.size() - 1)))
             current_cost.first -= distance_matrix[v1][v2];
 
         new_cost.first = this->get_new_cost(paths.first, this->vertex_idxs, distance_matrix);
     } else if (p1 == p2 && p2 == 1) {
-        current_cost.first = 0;
         current_cost.second = this->get_cost(paths.second, v1_idx, distance_matrix) + this->get_cost(paths.second, v2_idx, distance_matrix);
 
         int v1 = paths.second[v1_idx];
         int v2 = paths.second[v2_idx];
 
-        if (abs(v2_idx - v1_idx) == 1)
+        if (abs(v2_idx - v1_idx) == 1 || (v1_idx == 0 && v2_idx == (paths.second.size() - 1)))
             current_cost.second -= distance_matrix[v1][v2];
 
         new_cost.second = this->get_new_cost(paths.second, this->vertex_idxs, distance_matrix);
