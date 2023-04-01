@@ -7,8 +7,8 @@ EdgeMove::EdgeMove(int path_id, TEdges edge_idxs) {
 }
 
 void EdgeMove::apply(TPaths &paths) {
-    int v11 = this->edge_idxs.first.first, v12 = this->edge_idxs.first.second;
-    int v21 = this->edge_idxs.second.first, v22 = this->edge_idxs.second.second;
+    int v12 = this->edge_idxs.first.second;
+    int v21 = this->edge_idxs.second.first;
 
     int n = round((float)(v21 - v12) / 2.0);
 
@@ -26,8 +26,10 @@ void EdgeMove::print() {
 }
 
 TPathCost EdgeMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
-    int v11 = this->edge_idxs.first.first, v12 = this->edge_idxs.first.second;
-    int v21 = this->edge_idxs.second.first, v22 = this->edge_idxs.second.second;
+    TPath path = (this->path_id == 0) ? paths.first : paths.second;
+
+    int v11 = path[this->edge_idxs.first.first], v12 = path[this->edge_idxs.first.second];
+    int v21 = path[this->edge_idxs.second.first], v22 = path[this->edge_idxs.second.second];
 
     int current_cost = distance_matrix[v11][v12] + distance_matrix[v21][v22];
     int new_cost = distance_matrix[v11][v21] + distance_matrix[v12][v22];
