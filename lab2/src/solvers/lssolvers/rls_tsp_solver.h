@@ -6,7 +6,9 @@
 class RLSSolver : public LSSolver
 {
 public:
-    TPaths solve();   
+    TPaths solve();
+private:
+    void generate_fully_random_solution(default_random_engine);
 };
 
 #endif
