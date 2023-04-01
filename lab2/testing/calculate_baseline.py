@@ -4,7 +4,7 @@ import os
 DIR_DATA = os.path.join("..", "data")
 DIR_BASELINES = os.path.join("..", "baselines")
 DIR_PLOTS = os.path.join("..", "plots")
-ITERATIONS = 1000
+ITERATIONS = 3000
 
 # Running instances
 for filename in os.listdir(DIR_DATA):

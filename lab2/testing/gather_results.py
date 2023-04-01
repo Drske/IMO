@@ -73,15 +73,15 @@ for instance in ["kroA100.tsp", "kroB100.tsp"]:
                 
                 avg_cost = tmp.total_cost.mean();
                 min_cost = tmp[tmp.total_cost == tmp.total_cost.min()]["total_cost"].values[0]
-                min_cost_sv = tmp[tmp.total_cost == tmp.total_cost.min()]["start_vertex"].values[0]
+                min_cost_sv = tmp[tmp.total_cost == tmp.total_cost.min()]["start_vertex"].values[0] + 1
                 max_cost = tmp[tmp.total_cost == tmp.total_cost.max()]["total_cost"].values[0]
-                max_cost_sv = tmp[tmp.total_cost == tmp.total_cost.max()]["start_vertex"].values[0]
+                max_cost_sv = tmp[tmp.total_cost == tmp.total_cost.max()]["start_vertex"].values[0] + 1
                 
                 avg_duration = tmp.duration.mean();
                 min_duration = tmp[tmp.duration == tmp.duration.min()]["duration"].values[0]
-                min_duration_sv = tmp[tmp.duration == tmp.duration.min()]["start_vertex"].values[0]
+                min_duration_sv = tmp[tmp.duration == tmp.duration.min()]["start_vertex"].values[0] + 1
                 max_duration = tmp[tmp.duration == tmp.duration.max()]["duration"].values[0]
-                max_duration_sv = tmp[tmp.duration == tmp.duration.max()]["start_vertex"].values[0]
+                max_duration_sv = tmp[tmp.duration == tmp.duration.max()]["start_vertex"].values[0] + 1
             
                 gathered_results_row = pd.DataFrame({
                     "instance": [instance],
