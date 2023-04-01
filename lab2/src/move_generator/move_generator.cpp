@@ -35,10 +35,10 @@ void MoveGenerator::add_vertex_moves_from_path(TPath path, int path_id, vector<M
 }
 
 void MoveGenerator::add_edge_moves_from_path(TPath path, int path_id, vector<Move*>& moves) {
-    for (int i = 0; i < path.size() - 1; i++) {
+    for (int i = 0; i < path.size() - 2; i++) {
         TEdge edge1_idxs(i, i + 1);
         
-        for (int j = i; j < path.size(); j++) {
+        for (int j = i + 2; j < path.size(); j++) {
             TEdge edge2_idxs;
 
             if (j == (path.size() - 1))
