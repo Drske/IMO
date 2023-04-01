@@ -23,14 +23,10 @@ for i, row in gathered_results.iterrows():
     max_duration_sv = row["max_duration [ms]"].split("(")[1].split(")")[0]
     
     result_files = [
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N1", min_cost_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N2", min_cost_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N1", max_cost_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N2", max_cost_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N1", min_duration_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N2", min_duration_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N1", max_duration_sv),
-        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, "N2", max_duration_sv)
+        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, neighbourhood, min_cost_sv),
+        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, neighbourhood, max_cost_sv),
+        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, neighbourhood, min_duration_sv),
+        "{}-{}-{}-{}-{}".format(instance, solver, initial_solver, neighbourhood, max_duration_sv),
     ]
     
     for result_file in result_files:
