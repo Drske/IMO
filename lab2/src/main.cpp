@@ -241,10 +241,12 @@ int main(int argc, char **argv)
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();
     high_resolution_clock::time_point stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<milliseconds>(stop - start).count();
+
+    printf("DUPA: %f\n", duration);
 
     TPathCost cost = (*solver).get_cost();
 
-    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost,duration);
+    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration);
     return 0;
 }

@@ -31,7 +31,7 @@ TPaths SLSSolver::solve()
     while (applied)
     {
         applied = false;
-        best_delta = make_pair(INT_MAX, INT_MAX);
+        best_delta = make_pair(INT_MAX / 2, INT_MAX / 2);
 
         vector<Move *> moves = get_moves(this->paths);
         
@@ -45,7 +45,7 @@ TPaths SLSSolver::solve()
             }
         }
 
-        if (best_delta.first + best_delta.second < 0)
+        if (best_delta.first + best_delta.second)
         {
             printf("Best delta: %d %d\n", best_delta.first, best_delta.second);
             printf("Best move: ");

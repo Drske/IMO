@@ -4,3 +4,4 @@
 python3 visualization.py data/kroA100.csv output1.json result1.pdf
 python3 visualization.py data/kroA100.csv output2.json result2.pdf
 open -a Preview result1.pdf result2.pdf
+ 
