@@ -93,5 +93,5 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
         new_cost = this->get_new_cost(paths.first, paths.second, this->vertex_idxs, distance_matrix);
     }
 
-    return new_cost - current_cost;
+    return make_pair(new_cost.first - current_cost.first, new_cost.second - current_cost.second);
 }
