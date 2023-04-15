@@ -22,4 +22,10 @@ typedef vector<TInsertionCost> TInsertionCosts;
 typedef pair<int,int> TEdge;
 typedef pair<TEdge, TEdge> TEdges;
 
+enum MoveState {
+    APPLICABLE,
+    NOT_APPLICABLE,
+    FUTURE_APPLICABLE
+};
+
 #endif
