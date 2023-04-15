@@ -108,6 +108,7 @@ int main(int argc, char **argv)
     solvers["random-walk"] = new RLSSolver();
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
+    solvers["queue-ls"] = new QLSSolver();
     solvers["steepest-ls-wic"] = new CLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();

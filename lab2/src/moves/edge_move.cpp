@@ -79,3 +79,11 @@ MoveState EdgeMove::checkMoveState(TPaths paths) {
     // Otherwise - not applicable
     return MoveState::NOT_APPLICABLE;
 }
+
+TEdges EdgeMove::get_edge_idxs() {
+    return this->edge_idxs;
+}
+
+int EdgeMove::get_path_id() {
+    return this->path_id;
+}
