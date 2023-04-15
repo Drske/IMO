@@ -13,6 +13,8 @@ public:
     void print();
     TPathCost get_cost_delta(TPaths paths, int distance_matrix[][N]);
     MoveState checkMoveState(TPaths paths);
+    TEdges get_edge_idxs();
+    int get_path_id();
 private:
     int path_id;
     TEdges edge_idxs;

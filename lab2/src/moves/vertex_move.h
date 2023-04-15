@@ -13,6 +13,8 @@ public:
     void print();
     TPathCost get_cost_delta(TPaths paths, int distance_matrix[][N]);
     MoveState checkMoveState(TPaths paths);
+    pair<int, int> get_path_ids();
+    pair<int, int> get_vertex_idxs();
 private:
     int get_cost(TPath path, int vertex_idx, int distance_matrix[][N]);
     int get_new_cost(TPath path, pair<int, int> vertex_idxs, int distance_matrix[][N]);
