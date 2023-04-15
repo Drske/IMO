@@ -17,6 +17,7 @@
 #include "solvers/lssolvers/sls_tsp_solver.h"
 #include "solvers/lssolvers/cls_tsp_solver.h"
 #include "solvers/lssolvers/qls_tsp_solver.h"
+#include "solvers/lssolvers/qcls_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -109,7 +110,8 @@ int main(int argc, char **argv)
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
     solvers["queue-ls"] = new QLSSolver();
-    solvers["steepest-ls-wic"] = new CLSSolver();
+    solvers["candidate-ls"] = new CLSSolver();
+    solvers["qc-ls"] = new QCLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -262,6 +264,27 @@ int main(int argc, char **argv)
     TPathCost cost = (*solver).get_cost();
 
     save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration);
+
+    int evaluated_cost = cost.first + cost.second;
+    int real_cost = 0;
+
+    for (int i = 0; i < paths.first.size() - 1; i++)
+    {
+        real_cost += distance_matrix[paths.first[i]][paths.first[i + 1]];
+        printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[i]][paths.first[i + 1]], paths.first[i], paths.first[i + 1]);
+    }
+    real_cost += distance_matrix[paths.first[N / 2 - 1]][paths.first[0]];
+    printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[N / 2 - 1]][paths.first[0]], paths.first[N / 2 - 1], paths.first[0]);
+
+    for (int i = 0; i < paths.second.size() - 1; i++)
+    {
+        real_cost += distance_matrix[paths.second[i]][paths.second[i + 1]];
+        printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[i]][paths.second[i + 1]], paths.second[i], paths.second[i + 1]);
+    }
+    real_cost += distance_matrix[paths.second[N / 2 - 1]][paths.second[0]];
+    printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[N / 2 - 1]][paths.second[0]], paths.second[N / 2 - 1], paths.second[0]);
+
+    printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
 
     return 0;
 }
