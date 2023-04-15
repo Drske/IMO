@@ -15,6 +15,7 @@
 #include "solvers/lssolvers/rls_tsp_solver.h"
 #include "solvers/lssolvers/gls_tsp_solver.h"
 #include "solvers/lssolvers/sls_tsp_solver.h"
+#include "solvers/lssolvers/cls_tsp_solver.h"
 #include "solvers/lssolvers/qls_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
@@ -108,6 +109,7 @@ int main(int argc, char **argv)
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
     solvers["queue-ls"] = new QLSSolver();
+    solvers["steepest-ls-wic"] = new CLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -119,7 +121,7 @@ int main(int argc, char **argv)
     string output_path;
     string neighbourhood;
 
-    int start_vertex, iterations;
+    int start_vertex, iterations, max_candidates;
 
     if (cmd_option_provided("-solver", argc, argv))
     {
@@ -169,6 +171,14 @@ int main(int argc, char **argv)
         uniform_int_distribution<int> uni(1, N);
 
         start_vertex = uni(rng);
+    }
+    if (cmd_option_provided("-max-candidates", argc, argv))
+    {
+        max_candidates = stoi(get_cmd_option("-max-candidates", argc, argv));
+    }
+    else
+    {
+        max_candidates = 10;
     }
     if (cmd_option_provided("-in", argc, argv))
     {
@@ -234,12 +244,15 @@ int main(int argc, char **argv)
     TPaths initial_solution = (*init_sol_gen).solve();
     TPathCost initial_cost = (*init_sol_gen).get_cost();
 
+    printf("Type %s\n", typeid(solver).name());
+
     (*solver).load_data(distance_matrix);
     (*solver).set_initial_solution(initial_solution);
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_initial_cost(initial_cost);
     (*solver).set_start_vertex(start_vertex);
+    (*solver).set_max_candidates(max_candidates);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();

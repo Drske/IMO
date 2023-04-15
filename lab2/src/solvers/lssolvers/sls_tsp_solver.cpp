@@ -4,16 +4,16 @@
 #include "sls_tsp_solver.h"
 #include "../../moves/move.h"
 #include "../../move_generator/move_generator.h"
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 TPaths SLSSolver::solve()
 {
     printf("Solving Steepest Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    default_random_engine rnd_e(seed);
 
     if (this->neighbourhood == "N1")
     {
@@ -27,17 +27,28 @@ TPaths SLSSolver::solve()
     bool applied = true;
     Move *best_move;
     TPathCost best_delta;
+    double gen_mov_dur = 0;
+    double eval_mov_dur = 0;
+    double apply_mov_dur = 0;
     
     while (applied)
     {
         applied = false;
         best_delta = make_pair(INT_MAX / 2, INT_MAX / 2);
-
+        
+        high_resolution_clock::time_point start = high_resolution_clock::now();
         vector<Move *> moves = get_moves(this->paths);
+        high_resolution_clock::time_point stop = high_resolution_clock::now();
+        gen_mov_dur += duration_cast<microseconds>(stop - start).count();
+
+        // printf("Generated moves (steepest without candidates): %lu\n", moves.size());
         
         for (vector<Move *>::iterator it = moves.begin(); it != moves.end(); it++)
         {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             TPathCost delta = (*it)->get_cost_delta(this->paths, this->distance_matrix);
+            high_resolution_clock::time_point stop = high_resolution_clock::now();
+            eval_mov_dur += duration_cast<microseconds>(stop - start).count();
             if (delta.first + delta.second < best_delta.first + best_delta.second)
             {
                 best_delta = delta;
@@ -47,12 +58,16 @@ TPaths SLSSolver::solve()
 
         if (best_delta.first + best_delta.second < 0)
         {
+            high_resolution_clock::time_point start = high_resolution_clock::now();
             best_move->apply(this->paths);
+            high_resolution_clock::time_point stop = high_resolution_clock::now();
+            apply_mov_dur += duration_cast<microseconds>(stop - start).count();
             this->path_cost.first += best_delta.first;
             this->path_cost.second += best_delta.second;
             applied=true;
         }
     }
 
+    printf("Gen: %f\nEval: %f\nApply: %f\n", gen_mov_dur, eval_mov_dur, apply_mov_dur);
     return this->paths;
 }
