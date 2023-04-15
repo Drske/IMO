@@ -22,6 +22,7 @@ public:
     void set_start_vertex(int);
     void set_initial_solution(TPaths);
     void set_initial_cost(TPathCost);
+    void set_max_candidates(int);
 
     TPathCost get_cost();
 
@@ -31,6 +32,7 @@ protected:
     int start_vertex;
     int distance_matrix[N][N];
     bool used_vertices[N] = { false };
+    int max_candidates;
     TPaths paths;
     TPathLength path_length;
     TPathCost path_cost;
