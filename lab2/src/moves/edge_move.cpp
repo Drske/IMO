@@ -44,3 +44,7 @@ TPathCost EdgeMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 
     return delta_cost;
 }
+
+MoveState EdgeMove::checkMoveState(TPaths paths) {
+    // TODO
+}

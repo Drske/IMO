@@ -111,3 +111,7 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 
     return make_pair(new_cost.first - current_cost.first, new_cost.second - current_cost.second);
 }
+
+MoveState VertexMove::checkMoveState(TPaths paths) {
+    // TODO
+}
