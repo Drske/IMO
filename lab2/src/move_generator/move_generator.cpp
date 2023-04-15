@@ -21,8 +21,11 @@ vector<Move *> MoveGenerator::get_second_neighbourhood_moves(TPaths paths)
     vector<Move *> moves;
 
     add_edge_moves_from_path(paths.first, 0, moves);
+    // printf("Second neighbourhood after adding edge moves (1):\t%lu\n", moves.size());
     add_edge_moves_from_path(paths.second, 1, moves);
+    // printf("Second neighbourhood after adding edge moves (2):\t%lu\n", moves.size());
     add_vertex_moves_from_paths(paths, moves);
+    // printf("Second neighbourhood after adding vertex moves (1):\t%lu\n", moves.size());
 
     return moves;
 }
@@ -32,8 +35,13 @@ vector<Move *> MoveGenerator::get_second_neighbourhood_candidate_moves(TPaths pa
     vector<Move *> moves;
 
     add_candidate_edge_moves_from_path(paths.first, 0, moves, distance_matrix, max_candidates);
+    // printf("Candidate second neighbourhood after adding edge moves (1):\t%lu\n", moves.size());
     add_candidate_edge_moves_from_path(paths.second, 1, moves, distance_matrix, max_candidates);
+    // printf("Candidate second neighbourhood after adding edge moves (2):\t%lu\n", moves.size());
     add_candidate_vertex_moves_from_paths(paths, moves, distance_matrix, max_candidates);
+    // printf("Candidate second neighbourhood after adding vertex moves (1):\t%lu\n", moves.size());
+
+    return moves;
 }
 
 void MoveGenerator::add_vertex_moves_from_path(TPath path, int path_id, vector<Move *> &moves)
@@ -130,6 +138,13 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
             int j = nearest_neighbours.top().first;
             nearest_neighbours.pop();
 
+            if (i > j)
+            {
+                continue;
+            }
+
+            candidates_no += 1;
+
             int p = path[i]; // p is an id of idx i
             int q = path[j]; // q is an id of idx j
 
@@ -167,5 +182,47 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
 
 void MoveGenerator::add_candidate_vertex_moves_from_paths(TPaths paths, vector<Move *> &moves, int distance_matrix[][N], int max_candidates)
 {
-    add_vertex_moves_from_paths(paths, moves);
+    // add_vertex_moves_from_paths(paths, moves);
+
+    pair<int, int> path_ids(0, 1);
+
+    // for (int i = 0; i < paths.first.size(); i++)
+    // {
+    //     for (int j = 0; j < paths.second.size(); j++)
+    //     {
+    //         pair<int, int> vertex_idxs(i, j);
+    //         pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
+    //         moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+    //     }
+    // }
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, neigh_comp> nearest_neighbours;
+    int candidates_no;
+
+    for (int i = 0; i < paths.first.size(); i++)
+    {
+        while (!nearest_neighbours.empty())
+        {
+            nearest_neighbours.pop();
+        }
+        
+        candidates_no = 0;
+
+        for (int j = 0; j < paths.second.size(); j++)
+        {
+            // Save neighbour as idx in path
+            nearest_neighbours.push(make_pair(j, distance_matrix[paths.first[i]][paths.second[j]]));
+        }
+
+        while (!nearest_neighbours.empty() && candidates_no < max_candidates)
+        {
+            int j = nearest_neighbours.top().first;
+            nearest_neighbours.pop();
+            candidates_no += 1;
+
+            pair<int, int> vertex_idxs(i, j);
+            pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+        }
+    }
 }

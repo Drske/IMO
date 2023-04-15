@@ -35,7 +35,7 @@ void TSPSolver::set_initial_cost(TPathCost intitial_solution_cost){
 }
 
 void TSPSolver::set_max_candidates(int no){
-    this->candidate_moves_no = no;
+    this->max_candidates = no;
 }
 
 void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
