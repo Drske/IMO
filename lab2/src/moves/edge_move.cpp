@@ -1,9 +1,10 @@
 #include "edge_move.h"
 #include <cmath>
 
-EdgeMove::EdgeMove(int path_id, TEdges edge_idxs) {
+EdgeMove::EdgeMove(int path_id, TEdges edge_idxs, TEdges edge_ids) {
     this->path_id = path_id;
     this->edge_idxs = edge_idxs;
+    this->edge_ids = edge_ids;
 }
 
 void EdgeMove::apply(TPaths &paths) {

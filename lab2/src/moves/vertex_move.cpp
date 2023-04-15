@@ -1,8 +1,9 @@
 #include "vertex_move.h"
 
-VertexMove::VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs) {
+VertexMove::VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs, pair<int, int> vertex_ids) {
     this->path_ids = path_ids;
     this->vertex_idxs = vertex_idxs;
+    this->vertex_ids = vertex_ids;
 }
 
 void VertexMove::apply(TPaths &paths) {
