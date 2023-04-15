@@ -271,20 +271,20 @@ int main(int argc, char **argv)
     for (int i = 0; i < paths.first.size() - 1; i++)
     {
         real_cost += distance_matrix[paths.first[i]][paths.first[i + 1]];
-        printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[i]][paths.first[i + 1]], paths.first[i], paths.first[i + 1]);
+        // printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[i]][paths.first[i + 1]], paths.first[i], paths.first[i + 1]);
     }
     real_cost += distance_matrix[paths.first[N / 2 - 1]][paths.first[0]];
-    printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[N / 2 - 1]][paths.first[0]], paths.first[N / 2 - 1], paths.first[0]);
+    // printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[N / 2 - 1]][paths.first[0]], paths.first[N / 2 - 1], paths.first[0]);
 
     for (int i = 0; i < paths.second.size() - 1; i++)
     {
         real_cost += distance_matrix[paths.second[i]][paths.second[i + 1]];
-        printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[i]][paths.second[i + 1]], paths.second[i], paths.second[i + 1]);
+        // printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[i]][paths.second[i + 1]], paths.second[i], paths.second[i + 1]);
     }
     real_cost += distance_matrix[paths.second[N / 2 - 1]][paths.second[0]];
-    printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[N / 2 - 1]][paths.second[0]], paths.second[N / 2 - 1], paths.second[0]);
+    // printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[N / 2 - 1]][paths.second[0]], paths.second[N / 2 - 1], paths.second[0]);
 
-    printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
+    // printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
 
     return 0;
 }

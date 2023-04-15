@@ -1,35 +1,8 @@
-#ifndef TYPES_H
-#define TYPES_H
-
-#include <utility>
-#include <vector>
+#include <iostream>
 #include <map>
-#include <set>
-
-#define N 200
+#include <vector>
 
 using namespace std;
-
-typedef vector<int> TPath;
-typedef pair<TPath, TPath> TPaths;
-typedef pair<int, int> TPathLength;
-typedef pair<int, int> TPathCost;
-
-typedef pair<int, int> TVertex;
-typedef TVertex TVertices[N];
-
-typedef pair<int, int> TInsertionCost;
-typedef vector<TInsertionCost> TInsertionCosts;
-
-typedef pair<int, int> TEdge;
-typedef pair<TEdge, TEdge> TEdges;
-
-enum MoveState
-{
-    APPLICABLE,
-    NOT_APPLICABLE,
-    FUTURE_APPLICABLE
-};
 
 class NearestNeighbourQueue
 {
@@ -107,6 +80,27 @@ private:
     static bool compare(const pair<int, int> &a, const pair<int, int> &b) { return a.second < b.second; }
 };
 
-typedef NearestNeighbourQueue Tnnq;
+int main()
+{
+    NearestNeighbourQueue nnq;
+    nnq.add(1, 2, 100);
+    nnq.add(1, 3, 90);
+    nnq.add(1, 4, 120);
+    nnq.add(1, 2, 70);
+    nnq.add(2, 2, 100);
+    nnq.add(2, 3, 90);
+    nnq.add(3, 2, 120);
+    nnq.add(3, 2, 70);
 
-#endif
+    nnq.sortit();
+    nnq.reset();
+
+    for (int i = 1; i <= 3; i++)
+    {
+        while (!nnq.end(i))
+        {
+            pair<int, int> nd = nnq.topnext(i);
+            printf("Vertex: %d, neigh: %d, cost: %d\n", i, nd.first, nd.second);
+        }
+    }
+}
