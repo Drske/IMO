@@ -19,7 +19,7 @@ void VertexMove::apply(TPaths &paths) {
 }
 
 void VertexMove::print() {
-    printf("v1_idx = %d, v2_idx = %d, p1 = %d, p2 = %d\n", this->vertex_idxs.first, this->vertex_idxs.second, this->path_ids.first, this->path_ids.second);
+    printf("v1 = %d, v2 = %d, v1_idx = %d, v2_idx = %d, p1 = %d, p2 = %d\n", this->vertex_ids.first, this->vertex_ids.second, this->vertex_idxs.first, this->vertex_idxs.second, this->path_ids.first, this->path_ids.second);
 }
 
 int VertexMove::get_cost(TPath path, int vertex_idx, int distance_matrix[][N]) {
@@ -139,4 +139,12 @@ MoveState VertexMove::checkMoveState(TPaths paths) {
         return MoveState::APPLICABLE;
 
     return MoveState::NOT_APPLICABLE;
+}
+
+pair<int, int> VertexMove::get_path_ids() {
+    return this->path_ids;
+}
+
+pair<int, int> VertexMove::get_vertex_idxs() {
+    return this->vertex_idxs;
 }
