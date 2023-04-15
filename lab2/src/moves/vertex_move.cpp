@@ -1,9 +1,10 @@
 #include "vertex_move.h"
 
-VertexMove::VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs, pair<int, int> vertex_ids) {
+VertexMove::VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs, pair<int, int> vertex_ids, pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids) {
     this->path_ids = path_ids;
     this->vertex_idxs = vertex_idxs;
     this->vertex_ids = vertex_ids;
+    this->adjacent_vertex_ids = adjacent_vertex_ids;
 }
 
 void VertexMove::apply(TPaths &paths) {
@@ -113,29 +114,36 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 }
 
 MoveState VertexMove::checkMoveState(TPaths paths) {
-    int p1 = this->path_ids.first;
-    int p2 = this->path_ids.second;
+    // Only works for changing vertices between paths 0 and 1
 
-    pair<int, int> new_vertex_ids;
+    int v1_idx = this->vertex_idxs.first;
+    int v1_id = this->vertex_ids.first;
+    int v1_pred_idx = (v1_idx == 0) ? (paths.first.size() - 1) : (v1_idx - 1);
+    int v1_pred_id = this->adjacent_vertex_ids.first.first;
+    int v1_next_idx = (v1_idx == (paths.first.size() - 1)) ? 0 : (v1_idx + 1);
+    int v1_next_id = this->adjacent_vertex_ids.first.second;
 
-    if (p1 == p2 && p2 == 0) {
-        new_vertex_ids = make_pair(
-            paths.first[this->vertex_idxs.first],
-            paths.first[this->vertex_idxs.second]
-        );
-    } else if (p1 == p2 && p2 == 1) {
-        new_vertex_ids = make_pair(
-            paths.second[this->vertex_idxs.first],
-            paths.second[this->vertex_idxs.second]
-        );
-    } else if (p1 == 0 && p2 == 1) {
-        new_vertex_ids = make_pair(
-            paths.first[this->vertex_idxs.first],
-            paths.second[this->vertex_idxs.second]
-        );
-    }
+    int v2_id = this->vertex_ids.second;
+    int v2_idx = this->vertex_idxs.second;
+    int v2_pred_idx = (v2_idx == 0) ? (paths.second.size() - 1) : (v2_idx - 1);
+    int v2_pred_id = this->adjacent_vertex_ids.second.first;
+    int v2_next_idx = (v2_idx == (paths.second.size() - 1)) ? 0 : (v2_idx + 1);
+    int v2_next_id = this->adjacent_vertex_ids.second.second;
 
-    if (new_vertex_ids.first == this->vertex_ids.first && new_vertex_ids.second == this->vertex_ids.second) 
+    if (((v1_id == paths.first[v1_idx]) && (v1_pred_id == paths.first[v1_pred_idx]) && (v1_next_id == paths.first[v1_next_idx])) &&
+        ((v2_id == paths.second[v2_idx]) && (v2_pred_id == paths.second[v2_pred_idx]) && (v2_next_id == paths.second[v2_next_idx]))) 
+        return MoveState::APPLICABLE;
+
+    if (((v1_id == paths.first[v1_idx]) && (v1_pred_id == paths.first[v1_next_idx]) && (v1_next_id == paths.first[v1_pred_idx])) &&
+        ((v2_id == paths.second[v2_idx]) && (v2_pred_id == paths.second[v2_next_idx]) && (v2_next_id == paths.second[v2_pred_idx]))) 
+        return MoveState::APPLICABLE;
+
+    if (((v2_id == paths.first[v1_idx]) && (v2_pred_id == paths.first[v1_pred_idx]) && (v2_next_id == paths.first[v1_next_idx])) &&
+        ((v1_id == paths.second[v2_idx]) && (v1_pred_id == paths.second[v2_pred_idx]) && (v1_next_id == paths.second[v2_next_idx]))) 
+        return MoveState::APPLICABLE;
+
+    if (((v2_id == paths.first[v1_idx]) && (v2_pred_id == paths.first[v1_next_idx]) && (v2_next_id == paths.first[v1_pred_idx])) &&
+        ((v1_id == paths.second[v2_idx]) && (v1_pred_id == paths.second[v2_next_idx]) && (v1_next_id == paths.second[v2_pred_idx]))) 
         return MoveState::APPLICABLE;
 
     return MoveState::NOT_APPLICABLE;

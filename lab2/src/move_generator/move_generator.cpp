@@ -3,6 +3,15 @@
 #include "move_generator.h"
 #include <queue>
 
+pair<int, int> MoveGenerator::get_adjacent_vertex_ids(TPath path, int vertex_idx) {
+    int pred_idx = (vertex_idx == 0) ? (path.size() - 1) : (vertex_idx - 1); // predecessor
+    int next_idx = (vertex_idx == (path.size() - 1)) ? 0 : (vertex_idx + 1); // succesor
+
+    pair<int, int> adjacent_vertex_ids(path[pred_idx], path[next_idx]);
+    
+    return adjacent_vertex_ids;
+}
+
 vector<Move *> MoveGenerator::get_first_neighbourhood_moves(TPaths paths)
 {
     // Wymiana wierzchołków wewnątrz + wymiana wierzchołków pomiędzy cyklami
@@ -53,7 +62,12 @@ void MoveGenerator::add_vertex_moves_from_path(TPath path, int path_id, vector<M
         {
             pair<int, int> vertex_idxs(i, j);
             pair<int, int> vertex_ids(path[i], path[j]);
-            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+
+            pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
+            adjacent_vertex_ids.first = get_adjacent_vertex_ids(path, vertex_idxs.first);
+            adjacent_vertex_ids.second = get_adjacent_vertex_ids(path, vertex_idxs.second);
+
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids, adjacent_vertex_ids));
         }
     }
 }
@@ -94,7 +108,11 @@ void MoveGenerator::add_vertex_moves_from_paths(TPaths paths, vector<Move *> &mo
         {
             pair<int, int> vertex_idxs(i, j);
             pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
-            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+            pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
+            adjacent_vertex_ids.first = get_adjacent_vertex_ids(paths.first, vertex_idxs.first);
+            adjacent_vertex_ids.second = get_adjacent_vertex_ids(paths.second, vertex_idxs.second);
+
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids, adjacent_vertex_ids));
         }
     }
 }
@@ -222,7 +240,11 @@ void MoveGenerator::add_candidate_vertex_moves_from_paths(TPaths paths, vector<M
 
             pair<int, int> vertex_idxs(i, j);
             pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
-            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+            pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
+            adjacent_vertex_ids.first = get_adjacent_vertex_ids(paths.first, vertex_idxs.first);
+            adjacent_vertex_ids.second = get_adjacent_vertex_ids(paths.second, vertex_idxs.second);
+
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids, adjacent_vertex_ids));
         }
     }
 }
@@ -234,23 +256,22 @@ vector<Move*> MoveGenerator::get_new_moves_after_move(TPaths paths, VertexMove* 
     pair<vector<int>, vector<int>> paths_modified_idxs;
     vector<Move*> moves;
 
-    if (path_ids.first == path_ids.second && path_ids.second == 0) {
-        paths_modified_idxs.first.push_back(vertex_idxs.first);
-        paths_modified_idxs.first.push_back(vertex_idxs.second);
+    int v1_pred_idx = (vertex_idxs.first == 0) ? (paths.first.size() - 1) : (vertex_idxs.first - 1);
+    int v1_next_idx = (vertex_idxs.first == (paths.first.size() - 1)) ? 0 : (vertex_idxs.first + 1);  
 
-        add_edge_moves_after_move(paths.first, path_ids.first, paths_modified_idxs.first, moves);
-    } else if (path_ids.first == path_ids.second && path_ids.second == 1) {
-        paths_modified_idxs.second.push_back(vertex_idxs.first);
-        paths_modified_idxs.second.push_back(vertex_idxs.second);
+    paths_modified_idxs.first.push_back(vertex_idxs.first);
+    paths_modified_idxs.first.push_back(v1_pred_idx);
+    paths_modified_idxs.first.push_back(v1_next_idx);
 
-        add_edge_moves_after_move(paths.second, path_ids.second, paths_modified_idxs.second, moves);
-    } else if (path_ids.first == 0 && path_ids.second == 1) {
-        paths_modified_idxs.first.push_back(vertex_idxs.first);
-        paths_modified_idxs.second.push_back(vertex_idxs.second);
+    int v2_pred_idx = (vertex_idxs.second == 0) ? (paths.second.size() - 1) : (vertex_idxs.second - 1);
+    int v2_next_idx = (vertex_idxs.second == (paths.second.size() - 1)) ? 0 : (vertex_idxs.second + 1);
 
-        add_edge_moves_after_move(paths.first, path_ids.first, paths_modified_idxs.first, moves);
-        add_edge_moves_after_move(paths.second, path_ids.second, paths_modified_idxs.second, moves);
-    }
+    paths_modified_idxs.second.push_back(vertex_idxs.second);
+    paths_modified_idxs.second.push_back(v2_pred_idx);
+    paths_modified_idxs.second.push_back(v2_next_idx);
+
+    add_edge_moves_after_move(paths.first, path_ids.first, paths_modified_idxs.first, moves);
+    add_edge_moves_after_move(paths.second, path_ids.second, paths_modified_idxs.second, moves);
 
     add_vertex_moves_after_move(paths, paths_modified_idxs, moves);
 
@@ -287,7 +308,11 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
             pair<int, int> vertex_idxs(i, j);
             pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
 
-            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+            pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
+            adjacent_vertex_ids.first = get_adjacent_vertex_ids(paths.first, vertex_idxs.first);
+            adjacent_vertex_ids.second = get_adjacent_vertex_ids(paths.second, vertex_idxs.second);
+
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids, adjacent_vertex_ids));
         }
     }
 
@@ -296,7 +321,11 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
             pair<int, int> vertex_idxs(i, j);
             pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
 
-            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
+            pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
+            adjacent_vertex_ids.first = get_adjacent_vertex_ids(paths.first, vertex_idxs.first);
+            adjacent_vertex_ids.second = get_adjacent_vertex_ids(paths.second, vertex_idxs.second);
+
+            moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids, adjacent_vertex_ids));
         }
     }
 }
