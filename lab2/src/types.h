@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#define N 100
+#define N 200
 
 using namespace std;
 
