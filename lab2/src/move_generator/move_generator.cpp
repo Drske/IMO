@@ -122,13 +122,8 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
         }
         candidates_no = 0;
 
-        for (int j = 0; j < path.size(); j++)
+        for (int j = i+1; j < path.size(); j++)
         {
-            if (i == j)
-            {
-                continue;
-            }
-
             // Save neighbour as idx in path
             nearest_neighbours.push(make_pair(j, distance_matrix[path[i]][path[j]]));
         }
@@ -137,11 +132,6 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
         {
             int j = nearest_neighbours.top().first;
             nearest_neighbours.pop();
-
-            if (i > j)
-            {
-                continue;
-            }
 
             candidates_no += 1;
 
@@ -158,21 +148,21 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
             int pred_j = j != 0 ? j - 1 : path.size() - 1;
             int pred_q = path[pred_j];
 
-            TEdge edge1_idxs(i, succ_i);
-            TEdge edge1_ids(p, succ_p);
-            TEdge edge2_idxs(j, succ_j);
-            TEdge edge2_ids(q, succ_q);
+            // TEdge edge1_idxs(i, succ_i);
+            // TEdge edge1_ids(p, succ_p);
+            // TEdge edge2_idxs(j, succ_j);
+            // TEdge edge2_ids(q, succ_q);
 
-            TEdge edge3_idxs(pred_i, i);
-            TEdge edge3_ids(pred_p, p);
-            TEdge edge4_idxs(pred_j, j);
-            TEdge edge4_ids(pred_q, q);
+            // TEdge edge3_idxs(pred_i, i);
+            // TEdge edge3_ids(pred_p, p);
+            // TEdge edge4_idxs(pred_j, j);
+            // TEdge edge4_ids(pred_q, q);
 
-            TEdges from_succ_idxs(edge1_idxs, edge2_idxs);
-            TEdges from_succ_ids(edge1_ids, edge2_ids);
+            TEdges from_succ_idxs(make_pair(i, succ_i), make_pair(j, succ_j));
+            TEdges from_succ_ids(make_pair(p, succ_p), make_pair(q, succ_q));
 
-            TEdges from_pred_idxs(edge3_idxs, edge4_idxs);
-            TEdges from_pred_ids(edge3_ids, edge4_ids);
+            TEdges from_pred_idxs(make_pair(pred_i, i), make_pair(pred_j, j));
+            TEdges from_pred_ids(make_pair(pred_p, p), make_pair(pred_q, q));
 
             moves.push_back(new EdgeMove(path_id, from_succ_idxs, from_succ_ids));
             moves.push_back(new EdgeMove(path_id, from_pred_idxs, from_pred_ids));
@@ -182,19 +172,7 @@ void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, 
 
 void MoveGenerator::add_candidate_vertex_moves_from_paths(TPaths paths, vector<Move *> &moves, int distance_matrix[][N], int max_candidates)
 {
-    // add_vertex_moves_from_paths(paths, moves);
-
     pair<int, int> path_ids(0, 1);
-
-    // for (int i = 0; i < paths.first.size(); i++)
-    // {
-    //     for (int j = 0; j < paths.second.size(); j++)
-    //     {
-    //         pair<int, int> vertex_idxs(i, j);
-    //         pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
-    //         moves.push_back(new VertexMove(path_ids, vertex_idxs, vertex_ids));
-    //     }
-    // }
 
     priority_queue<pair<int, int>, vector<pair<int, int>>, neigh_comp> nearest_neighbours;
     int candidates_no;

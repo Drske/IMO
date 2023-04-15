@@ -17,6 +17,7 @@
 #include "solvers/lssolvers/sls_tsp_solver.h"
 #include "solvers/lssolvers/cls_tsp_solver.h"
 #include "solvers/lssolvers/qls_tsp_solver.h"
+#include "solvers/lssolvers/qcls_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -109,7 +110,8 @@ int main(int argc, char **argv)
     solvers["greedy-ls"] = new GLSSolver();
     solvers["steepest-ls"] = new SLSSolver();
     solvers["queue-ls"] = new QLSSolver();
-    solvers["steepest-ls-wic"] = new CLSSolver();
+    solvers["candidate-ls"] = new CLSSolver();
+    solvers["qc-ls"] = new QCLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
