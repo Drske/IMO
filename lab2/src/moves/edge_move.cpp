@@ -73,7 +73,7 @@ MoveState EdgeMove::checkMoveState(TPaths paths) {
     set<int> set_new_edge_ids = {new_edge_ids.first.first, new_edge_ids.first.second,
                                  new_edge_ids.second.first, new_edge_ids.second.second};
 
-    if (set_edge_ids == set_new_edge_ids) 
+    if (set_edge_ids == set_new_edge_ids)
         return MoveState::FUTURE_APPLICABLE;
 
     // Otherwise - not applicable

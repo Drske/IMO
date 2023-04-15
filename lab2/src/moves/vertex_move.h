@@ -8,7 +8,7 @@ using namespace std;
 class VertexMove : public Move
 {
 public:
-    VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs, pair<int, int> vertex_ids);
+    VertexMove(pair<int, int> path_ids, pair<int, int> vertex_idxs, pair<int, int> vertex_ids, pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids);
     void apply(TPaths &paths);
     void print();
     TPathCost get_cost_delta(TPaths paths, int distance_matrix[][N]);
@@ -22,6 +22,7 @@ private:
     pair<int, int> path_ids;
     pair<int, int> vertex_idxs;
     pair<int, int> vertex_ids;
+    pair<pair<int, int>, pair<int, int>> adjacent_vertex_ids;
 };
 
 #endif
