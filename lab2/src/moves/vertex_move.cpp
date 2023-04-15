@@ -113,5 +113,30 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 }
 
 MoveState VertexMove::checkMoveState(TPaths paths) {
-    // TODO
+    int p1 = this->path_ids.first;
+    int p2 = this->path_ids.second;
+
+    pair<int, int> new_vertex_ids;
+
+    if (p1 == p2 && p2 == 0) {
+        new_vertex_ids = make_pair(
+            paths.first[this->vertex_idxs.first],
+            paths.first[this->vertex_idxs.second]
+        );
+    } else if (p1 == p2 && p2 == 1) {
+        new_vertex_ids = make_pair(
+            paths.second[this->vertex_idxs.first],
+            paths.second[this->vertex_idxs.second]
+        );
+    } else if (p1 == 0 && p2 == 1) {
+        new_vertex_ids = make_pair(
+            paths.first[this->vertex_idxs.first],
+            paths.second[this->vertex_idxs.second]
+        );
+    }
+
+    if (new_vertex_ids.first == this->vertex_ids.first && new_vertex_ids.second == this->vertex_ids.second) 
+        return MoveState::APPLICABLE;
+
+    return MoveState::NOT_APPLICABLE;
 }

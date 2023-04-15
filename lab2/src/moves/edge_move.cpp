@@ -1,5 +1,6 @@
 #include "edge_move.h"
 #include <cmath>
+#include <set>
 
 EdgeMove::EdgeMove(int path_id, TEdges edge_idxs, TEdges edge_ids) {
     this->path_id = path_id;
@@ -46,5 +47,35 @@ TPathCost EdgeMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 }
 
 MoveState EdgeMove::checkMoveState(TPaths paths) {
-    // TODO
+    TPath path = (this->path_id == 0) ? paths.first : paths.second;
+    TEdges new_edge_ids = make_pair(
+        make_pair(path[this->edge_idxs.first.first], path[this->edge_idxs.first.second]),
+        make_pair(path[this->edge_idxs.second.first], path[this->edge_idxs.second.second])
+    );
+
+    // Exactly same order of ids - applicable
+    if (this->edge_ids.first.first == new_edge_ids.first.first &&
+        this->edge_ids.first.second == new_edge_ids.first.second && 
+        this->edge_ids.second.first == new_edge_ids.second.first && 
+        this->edge_ids.second.second == new_edge_ids.second.second) 
+        return MoveState::APPLICABLE;
+
+    // Both edges reversed - applicable
+    if (this->edge_ids.first.first == new_edge_ids.first.second &&
+        this->edge_ids.first.second == new_edge_ids.first.first && 
+        this->edge_ids.second.first == new_edge_ids.second.second && 
+        this->edge_ids.second.second == new_edge_ids.second.first) 
+        return MoveState::APPLICABLE;
+
+    // Same ids, different order - future applicable
+    set<int> set_edge_ids = {this->edge_ids.first.first, this->edge_ids.first.second,
+                             this->edge_ids.second.first, this->edge_ids.second.second};
+    set<int> set_new_edge_ids = {new_edge_ids.first.first, new_edge_ids.first.second,
+                                 new_edge_ids.second.first, new_edge_ids.second.second};
+
+    if (set_edge_ids == set_new_edge_ids) 
+        return MoveState::FUTURE_APPLICABLE;
+
+    // Otherwise - not applicable
+    return MoveState::NOT_APPLICABLE;
 }
