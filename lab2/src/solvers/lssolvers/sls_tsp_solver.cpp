@@ -12,8 +12,6 @@ TPaths SLSSolver::solve()
     printf("Solving Steepest Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    default_random_engine rnd_e(seed);
 
     if (this->neighbourhood == "N1")
     {

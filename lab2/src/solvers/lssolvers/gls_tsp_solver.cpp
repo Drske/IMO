@@ -12,7 +12,6 @@ TPaths GLSSolver::solve()
     printf("Solving Greedy Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
-    // unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     default_random_engine rnd_e(this->start_vertex);
 
     if (this->neighbourhood == "N1")

@@ -24,6 +24,14 @@ vector<Move*> MoveGenerator::get_second_neighbourhood_moves(TPaths paths) {
     return moves;
 }
 
+vector<Move*> MoveGenerator::get_second_neighbourhood_candidate_moves(TPaths paths){
+    vector<Move*> moves;
+
+    add_candidate_edge_moves_from_path(paths.first, 0, moves);
+    add_candidate_edge_moves_from_path(paths.second, 1, moves);
+    add_candidate_vertex_moves_from_paths(paths, moves);
+}
+
 void MoveGenerator::add_vertex_moves_from_path(TPath path, int path_id, vector<Move*>& moves) {
     pair<int, int> path_ids(path_id, path_id);
     for (int i = 0; i < path.size() - 1; i++) {
@@ -69,3 +77,13 @@ void MoveGenerator::add_vertex_moves_from_paths(TPaths paths, vector<Move*>& mov
         }
     }
 }
+
+void MoveGenerator::add_candidate_edge_moves_from_path(TPath path, int path_id, vector<Move*>& moves){
+    // TODO
+}
+
+void MoveGenerator::add_candidate_vertex_moves_from_paths(TPaths paths, vector<Move*>& moves){
+    // PROBABLY TODO
+    add_vertex_moves_from_paths(paths, moves);
+}
+
