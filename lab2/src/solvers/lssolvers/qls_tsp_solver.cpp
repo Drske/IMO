@@ -75,7 +75,9 @@ TPaths QLSSolver::solve()
             MoveItem move_item;
             move_item.move = (*it);
             move_item.cost_delta = (*it)->get_cost_delta(this->paths, this->distance_matrix);
-            LM.push(move_item);
+
+            if (move_item.cost_delta.first + move_item.cost_delta.second < 0)
+                LM.push(move_item);
         }
 
         while (!LM.empty())
