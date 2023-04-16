@@ -3,22 +3,23 @@
 #include "move_generator.h"
 #include <queue>
 
-pair<int, int> MoveGenerator::get_adjacent_vertex_idxs(TPath path, int vertex_idx) {
+pair<int, int> MoveGenerator::get_adjacent_vertex_idxs(TPath path, int vertex_idx)
+{
     int pred_idx = (vertex_idx == 0) ? (path.size() - 1) : (vertex_idx - 1); // predecessor
     int next_idx = (vertex_idx == (path.size() - 1)) ? 0 : (vertex_idx + 1); // succesor
 
     pair<int, int> adjacent_vertex_idxs(pred_idx, next_idx);
-    
+
     return adjacent_vertex_idxs;
 }
 
-pair<int, int> MoveGenerator::get_adjacent_vertex_ids(TPath path, int vertex_idx) {
+pair<int, int> MoveGenerator::get_adjacent_vertex_ids(TPath path, int vertex_idx)
+{
     pair<int, int> adjacent_vertex_idxs = get_adjacent_vertex_idxs(path, vertex_idx);
     pair<int, int> adjacent_vertex_ids(
-        path[adjacent_vertex_idxs.first], 
-        path[adjacent_vertex_idxs.second]
-    );
-    
+        path[adjacent_vertex_idxs.first],
+        path[adjacent_vertex_idxs.second]);
+
     return adjacent_vertex_ids;
 }
 
@@ -275,8 +276,9 @@ vector<Move *> MoveGenerator::get_new_moves_after_move(TPaths paths, EdgeMove *e
     return moves;
 }
 
-void MoveGenerator::add_vertex_move(TPaths paths, int i, int j, vector<Move *> &moves) 
+void MoveGenerator::add_vertex_move(TPaths paths, int i, int j, vector<Move *> &moves)
 {
+    printf("ADDING VERTEX MOVE: %d %d\n", paths.first[i], paths.second[j]);
     pair<int, int> path_ids(0, 1);
     pair<int, int> vertex_idxs(i, j);
     pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
@@ -292,15 +294,32 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
 {
     for (int i : paths_modified_idxs.first)
         for (int j = 0; j < paths.second.size(); j++)
+        {
+            int pred_i, succ_i;
+            i == 0 ? pred_i = paths.first.size() - 1 : pred_i = i - 1;
+            i == paths.first.size() - 1 ? succ_i = 0 : succ_i = i + 1;
+
             add_vertex_move(paths, i, j, moves);
+            add_vertex_move(paths, pred_i, j, moves);
+            add_vertex_move(paths, succ_i, j, moves);
+        }
 
     for (int i = 0; i < paths.first.size(); i++)
         for (int j : paths_modified_idxs.second)
+        {
+            int pred_j, succ_j;
+            j == 0 ? pred_j = paths.second.size() - 1 : pred_j = j - 1;
+            j == paths.second.size() - 1 ? succ_j = 0 : succ_j = j + 1;
+            
             add_vertex_move(paths, i, j, moves);
+            add_vertex_move(paths, i, pred_j, moves);
+            add_vertex_move(paths, i, succ_j, moves);
+        }
 }
 
 void MoveGenerator::add_edge_moves_after_move(TPath path, int path_id, vector<int> path_modified_idxs, vector<Move *> &moves)
 {
+    // add_edge_moves_from_path(path, path_id, moves);
     for (int i : path_modified_idxs)
     {
         TEdge edge1_prev_idxs(i - 1, i);
