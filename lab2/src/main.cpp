@@ -70,7 +70,8 @@ void save_results_to_json(string data_path,
                           TPaths initial_solution,
                           TPathCost cost,
                           TPathCost initial_cost,
-                          double duration)
+                          double duration,
+                          int max_candidates)
 
 {
     size_t pos = data_path.find_last_of("/");
@@ -83,6 +84,7 @@ void save_results_to_json(string data_path,
     j["neighbourhood"] = neighbourhood;
     j["start-vertex"] = start_vertex;
     j["duration"] = duration;
+    j["max-candidates"] = max_candidates;
     j["cost"] = {
         {"first", cost.first},
         {"second", cost.second}};
@@ -112,6 +114,7 @@ int main(int argc, char **argv)
     solvers["queue-ls"] = new QLSSolver();
     solvers["candidate-ls"] = new CLSSolver();
     solvers["qc-ls"] = new QCLSSolver();
+    solvers["greedy-cycle"] = new GCSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -249,10 +252,13 @@ int main(int argc, char **argv)
     printf("Type %s\n", typeid(solver).name());
 
     (*solver).load_data(distance_matrix);
-    (*solver).set_initial_solution(initial_solution);
+    if (solver_name != "greedy-cycle"){
+        (*solver).set_initial_solution(initial_solution);
+        (*solver).set_initial_cost(initial_cost);
+    }
+    
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
-    (*solver).set_initial_cost(initial_cost);
     (*solver).set_start_vertex(start_vertex);
     (*solver).set_max_candidates(max_candidates);
 
@@ -263,7 +269,7 @@ int main(int argc, char **argv)
 
     TPathCost cost = (*solver).get_cost();
 
-    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration);
+    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration, max_candidates);
 
     int evaluated_cost = cost.first + cost.second;
     int real_cost = 0;
@@ -284,7 +290,7 @@ int main(int argc, char **argv)
     real_cost += distance_matrix[paths.second[N / 2 - 1]][paths.second[0]];
     // printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[N / 2 - 1]][paths.second[0]], paths.second[N / 2 - 1], paths.second[0]);
 
-    // printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
+    printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
 
     return 0;
 }
