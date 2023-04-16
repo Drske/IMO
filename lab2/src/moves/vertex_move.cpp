@@ -15,7 +15,7 @@ void VertexMove::apply(TPaths &paths)
 
     if (vertex_ids.first == 30)
     {
-        printf("APPLY\n");
+        // printf("APPLY\n");
         int pred_v1, succ_v1, pred_v2, succ_v2;
 
         for (int i = 0; i < paths.first.size(); i++)
@@ -36,8 +36,8 @@ void VertexMove::apply(TPaths &paths)
             }
         }
 
-        printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
-        printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
+        // printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
+        // printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
     }
 
     if (p1 == p2 && p2 == 0)
@@ -176,9 +176,9 @@ MoveState VertexMove::checkMoveState(TPaths paths)
     if ((vertex_ids.first == 30 && vertex_ids.second == 50) || (vertex_ids.first == 50 && vertex_ids.second == 50))
     {
         verbose = true;
-        printf("CHECK VERTEX MOVE ");
+        //printf("CHECK VERTEX MOVE ");
         this->print();
-        printf("CHECK: %d == %d, %d == %d\n", this->vertex_ids.first, paths.first[this->vertex_idxs.first], this->vertex_ids.second, paths.second[this->vertex_idxs.second]);
+        //printf("CHECK: %d == %d, %d == %d\n", this->vertex_ids.first, paths.first[this->vertex_idxs.first], this->vertex_ids.second, paths.second[this->vertex_idxs.second]);
         int pred_v1, succ_v1, pred_v2, succ_v2;
 
         vertex_idxs.first == 0 ? pred_v1 = paths.first.size() - 1 : pred_v1 = vertex_idxs.first - 1;
@@ -187,8 +187,8 @@ MoveState VertexMove::checkMoveState(TPaths paths)
         vertex_idxs.second == 0 ? pred_v2 = paths.second.size() - 1 : pred_v2 = vertex_idxs.second - 1;
         vertex_idxs.second == paths.second.size() - 1 ? succ_v2 = 0 : succ_v2 = vertex_idxs.second + 1;
 
-        printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
-        printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
+        //printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
+        //printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
     }
 
     int v1_idx = this->vertex_idxs.first;
@@ -225,8 +225,8 @@ MoveState VertexMove::checkMoveState(TPaths paths)
     int v2_next_id = this->adjacent_vertex_ids.second.second;
 
     if (verbose){
-    printf("OTOCZENIE V1 (MD): %d %d %d\n", v1_pred_id, v1_id, v1_next_id);
-    printf("OTOCZENIE V2 (MD): %d %d %d\n", v2_pred_id, v2_id, v2_next_id);
+    //printf("OTOCZENIE V1 (MD): %d %d %d\n", v1_pred_id, v1_id, v1_next_id);
+    //printf("OTOCZENIE V2 (MD): %d %d %d\n", v2_pred_id, v2_id, v2_next_id);
     }
 
     if (v1_id != paths.first[v1_idx] || v2_id != paths.second[v2_idx])
