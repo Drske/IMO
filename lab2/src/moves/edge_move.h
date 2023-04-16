@@ -20,6 +20,7 @@ private:
     int path_id;
     TEdges edge_idxs;
     TEdges edge_ids;
+    void set_idxs_and_ids(TEdges edge_idxs, TEdges edge_ids);
 };
 
 #endif
