@@ -35,9 +35,6 @@ void VertexMove::apply(TPaths &paths)
                 i == paths.second.size() - 1 ? succ_v2 = 0 : succ_v2 = i + 1;
             }
         }
-
-        printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
-        printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
     }
 
     if (p1 == p2 && p2 == 0)
@@ -172,13 +169,10 @@ MoveState VertexMove::checkMoveState(TPaths paths)
     bool verbose = false;
 
     // Only works for changing vertices between paths 0 and 1
-
     if ((vertex_ids.first == 30 && vertex_ids.second == 50) || (vertex_ids.first == 50 && vertex_ids.second == 50))
     {
         verbose = true;
-        printf("CHECK VERTEX MOVE ");
         this->print();
-        printf("CHECK: %d == %d, %d == %d\n", this->vertex_ids.first, paths.first[this->vertex_idxs.first], this->vertex_ids.second, paths.second[this->vertex_idxs.second]);
         int pred_v1, succ_v1, pred_v2, succ_v2;
 
         vertex_idxs.first == 0 ? pred_v1 = paths.first.size() - 1 : pred_v1 = vertex_idxs.first - 1;
@@ -186,9 +180,6 @@ MoveState VertexMove::checkMoveState(TPaths paths)
 
         vertex_idxs.second == 0 ? pred_v2 = paths.second.size() - 1 : pred_v2 = vertex_idxs.second - 1;
         vertex_idxs.second == paths.second.size() - 1 ? succ_v2 = 0 : succ_v2 = vertex_idxs.second + 1;
-
-        printf("OTOCZENIE V1: %d %d %d\n", paths.first[pred_v1], vertex_ids.first, paths.first[succ_v1]);
-        printf("OTOCZENIE V2: %d %d %d\n", paths.second[pred_v2], vertex_ids.second, paths.second[succ_v2]);
     }
 
     int v1_idx = this->vertex_idxs.first;

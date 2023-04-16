@@ -14,7 +14,7 @@ for filename in os.listdir(DIR_DATA):
     for ls_solver in ["greedy-cycle", "steepest-ls", "queue-ls", "candidate-ls", "qc-ls"]:
         for init_sol_gen in ["random-walk"]:
             for neighbourhood in ["N2"]:
-                for start_vertex in range(1, 101):
+                for start_vertex in range(1, 11):
                     start_vertex = start_vertex * 2
                     instance = filename.split(".")[0]
                     output_file_path = os.path.join(DIR_RESULTS, "{}-{}-{}.json".format(

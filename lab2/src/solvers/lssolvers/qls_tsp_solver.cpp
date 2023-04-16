@@ -8,18 +8,21 @@
 
 using namespace std;
 
-struct MoveItem {
-    Move* move;
+struct MoveItem
+{
+    Move *move;
     TPathCost cost_delta;
 };
 
-class MoveItemComparator {
-    public:
-        bool operator()(MoveItem m1, MoveItem m2) {
-            if (m1.cost_delta.first + m1.cost_delta.second > m2.cost_delta.first + m2.cost_delta.second) 
-                return true;
-            return false;
-        }
+class MoveItemComparator
+{
+public:
+    bool operator()(MoveItem m1, MoveItem m2)
+    {
+        if (m1.cost_delta.first + m1.cost_delta.second > m2.cost_delta.first + m2.cost_delta.second)
+            return true;
+        return false;
+    }
 };
 
 TPaths QLSSolver::solve()
@@ -45,17 +48,21 @@ TPaths QLSSolver::solve()
     Move *best_move;
     TPathCost best_delta;
 
-    while (applied) {
+    int move_count = 0;
+
+    while (applied)
+    {
         applied = false;
         best_delta = make_pair(INT_MAX / 2, INT_MAX / 2);
         vector<Move *> moves;
         vector<MoveItem> future_moves;
 
-        if (LM.empty()) 
+        if (LM.empty())
             moves = get_moves(this->paths);
-        else {
-            VertexMove* vertexMove = dynamic_cast<VertexMove*>(best_move);
-            EdgeMove* edgeMove = dynamic_cast<EdgeMove*>(best_move);
+        else
+        {
+            VertexMove *vertexMove = dynamic_cast<VertexMove *>(best_move);
+            EdgeMove *edgeMove = dynamic_cast<EdgeMove *>(best_move);
 
             if (vertexMove)
                 moves = MoveGenerator::get_new_moves_after_move(this->paths, vertexMove);
@@ -63,40 +70,67 @@ TPaths QLSSolver::solve()
                 moves = MoveGenerator::get_new_moves_after_move(this->paths, edgeMove);
         }
 
-        for (vector<Move *>::iterator it = moves.begin(); it != moves.end(); it++) {
+        for (vector<Move *>::iterator it = moves.begin(); it != moves.end(); it++)
+        {
             MoveItem move_item;
             move_item.move = (*it);
             move_item.cost_delta = (*it)->get_cost_delta(this->paths, this->distance_matrix);
             LM.push(move_item);
         }
 
-        while (!LM.empty()) {
+        while (!LM.empty())
+        {
             MoveItem move_item = LM.top();
             LM.pop();
-            Move* move = move_item.move;
-
+            Move *move = move_item.move;
             MoveState move_state = move->checkMoveState(this->paths);
 
-            if (move_state == MoveState::APPLICABLE) {
+            if (move_state == MoveState::APPLICABLE)
+            {
                 best_move = move;
                 best_delta = move_item.cost_delta;
                 break;
-            } else if (move_state == MoveState::FUTURE_APPLICABLE) {
+            }
+            else if (move_state == MoveState::FUTURE_APPLICABLE)
+            {
                 future_moves.push_back(move_item);
-            } else if (move_state == MoveState::NOT_APPLICABLE) {
+            }
+            else if (move_state == MoveState::NOT_APPLICABLE)
+            {
                 //
             }
         }
 
-        if (best_delta.first + best_delta.second < 0) {
+        if (best_delta.first + best_delta.second < 0)
+        {
             best_move->apply(this->paths);
             this->path_cost.first += best_delta.first;
             this->path_cost.second += best_delta.second;
-            applied=true;
+            applied = true;
 
-            for (vector<MoveItem>::iterator it = future_moves.begin(); it != future_moves.end(); it++) {
+            for (vector<MoveItem>::iterator it = future_moves.begin(); it != future_moves.end(); it++)
+            {
                 LM.push(*it);
             }
+
+            printf("Best delta: %d, %d\n", best_delta.first, best_delta.second);
+            printf("Best move: ");
+            best_move->print();
+            printf("Current cost: %d, %d\n", path_cost.first, path_cost.second);
+            printf("-------- %d --------\n", move_count);
+            move_count++;
+
+            printf("Path 1: ");
+            for (auto v : paths.first)
+            {
+                printf("%d ", v);
+            }
+            printf("\nPath 2: ");
+            for (auto v : paths.second)
+            {
+                printf("%d ", v);
+            }
+            printf("\n");
         }
     }
 

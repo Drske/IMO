@@ -15,10 +15,11 @@ public:
     MoveState checkMoveState(TPaths paths);
     TEdges get_edge_idxs();
     int get_path_id();
+    TEdges edge_ids;
 private:
     int path_id;
     TEdges edge_idxs;
-    TEdges edge_ids;
+    
 };
 
 #endif

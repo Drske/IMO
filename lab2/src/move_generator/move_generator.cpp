@@ -41,12 +41,9 @@ vector<Move *> MoveGenerator::get_second_neighbourhood_moves(TPaths paths)
     vector<Move *> moves;
 
     add_edge_moves_from_path(paths.first, 0, moves);
-    // printf("Second neighbourhood after adding edge moves (1):\t%lu\n", moves.size());
     add_edge_moves_from_path(paths.second, 1, moves);
-    // printf("Second neighbourhood after adding edge moves (2):\t%lu\n", moves.size());
     add_vertex_moves_from_paths(paths, moves);
-    // printf("Second neighbourhood after adding vertex moves (1):\t%lu\n", moves.size());
-
+    
     return moves;
 }
 
@@ -278,7 +275,6 @@ vector<Move *> MoveGenerator::get_new_moves_after_move(TPaths paths, EdgeMove *e
 
 void MoveGenerator::add_vertex_move(TPaths paths, int i, int j, vector<Move *> &moves)
 {
-    printf("ADDING VERTEX MOVE: %d %d\n", paths.first[i], paths.second[j]);
     pair<int, int> path_ids(0, 1);
     pair<int, int> vertex_idxs(i, j);
     pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
@@ -319,56 +315,56 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
 
 void MoveGenerator::add_edge_moves_after_move(TPath path, int path_id, vector<int> path_modified_idxs, vector<Move *> &moves)
 {
-    // add_edge_moves_from_path(path, path_id, moves);
-    for (int i : path_modified_idxs)
-    {
-        TEdge edge1_prev_idxs(i - 1, i);
-        TEdge edge1_next_idxs(i, i + 1);
+    add_edge_moves_from_path(path, path_id, moves);
+    // for (int i : path_modified_idxs)
+    // {
+    //     TEdge edge1_prev_idxs(i - 1, i);
+    //     TEdge edge1_next_idxs(i, i + 1);
 
-        if (i == 0)
-            edge1_prev_idxs = make_pair(path.size() - 1, i);
-        else if (i == (path.size() - 1))
-            edge1_next_idxs = make_pair(i, 0);
+    //     if (i == 0)
+    //         edge1_prev_idxs = make_pair(path.size() - 1, i);
+    //     else if (i == (path.size() - 1))
+    //         edge1_next_idxs = make_pair(i, 0);
 
-        vector<TEdge> edges1_idxs = {edge1_prev_idxs, edge1_next_idxs};
+    //     vector<TEdge> edges1_idxs = {edge1_prev_idxs, edge1_next_idxs};
 
-        for (TEdge edge1_idxs : edges1_idxs)
-        {
-            TEdge edge1_ids(path[edge1_idxs.first], path[edge1_idxs.second]);
+    //     for (TEdge edge1_idxs : edges1_idxs)
+    //     {
+    //         TEdge edge1_ids(path[edge1_idxs.first], path[edge1_idxs.second]);
 
-            for (int j = 0; j < path.size(); j++)
-            {
-                TEdge edge2_idxs;
-                TEdge edge2_ids;
+    //         for (int j = 0; j < path.size(); j++)
+    //         {
+    //             TEdge edge2_idxs;
+    //             TEdge edge2_ids;
 
-                if (j == (path.size() - 1))
-                    edge2_idxs = make_pair(j, 0);
-                else
-                    edge2_idxs = make_pair(j, j + 1);
+    //             if (j == (path.size() - 1))
+    //                 edge2_idxs = make_pair(j, 0);
+    //             else
+    //                 edge2_idxs = make_pair(j, j + 1);
 
-                int start_idxs_diff = edge1_idxs.first - edge2_idxs.first;
+    //             int start_idxs_diff = edge1_idxs.first - edge2_idxs.first;
 
-                if (abs(start_idxs_diff) < 2)
-                    continue;
+    //             if (abs(start_idxs_diff) < 2)
+    //                 continue;
 
-                edge2_ids = make_pair(path[edge2_idxs.first], path[edge2_idxs.second]);
+    //             edge2_ids = make_pair(path[edge2_idxs.first], path[edge2_idxs.second]);
 
-                TEdges edge_idxs;
-                TEdges edge_ids;
+    //             TEdges edge_idxs;
+    //             TEdges edge_ids;
 
-                if (start_idxs_diff < 0)
-                {
-                    edge_idxs = make_pair(edge1_idxs, edge2_idxs);
-                    edge_ids = make_pair(edge1_ids, edge2_ids);
-                }
-                else
-                {
-                    edge_idxs = make_pair(edge2_idxs, edge1_idxs);
-                    edge_ids = make_pair(edge2_ids, edge1_ids);
-                }
+    //             if (start_idxs_diff < 0)
+    //             {
+    //                 edge_idxs = make_pair(edge1_idxs, edge2_idxs);
+    //                 edge_ids = make_pair(edge1_ids, edge2_ids);
+    //             }
+    //             else
+    //             {
+    //                 edge_idxs = make_pair(edge2_idxs, edge1_idxs);
+    //                 edge_ids = make_pair(edge2_ids, edge1_ids);
+    //             }
 
-                moves.push_back(new EdgeMove(path_id, edge_idxs, edge_ids));
-            }
-        }
-    }
+    //             moves.push_back(new EdgeMove(path_id, edge_idxs, edge_ids));
+    //         }
+    //     }
+    // }
 }

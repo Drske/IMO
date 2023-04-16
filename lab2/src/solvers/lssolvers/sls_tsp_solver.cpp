@@ -30,6 +30,8 @@ TPaths SLSSolver::solve()
     // double gen_mov_dur = 0;
     // double eval_mov_dur = 0;
     // double apply_mov_dur = 0;
+
+    int move_count = 0;
     
     while (applied)
     {
@@ -58,16 +60,29 @@ TPaths SLSSolver::solve()
 
         if (best_delta.first + best_delta.second < 0)
         {
-            // high_resolution_clock::time_point start = high_resolution_clock::now();
             best_move->apply(this->paths);
-            // high_resolution_clock::time_point stop = high_resolution_clock::now();
-            // apply_mov_dur += duration_cast<microseconds>(stop - start).count();
             this->path_cost.first += best_delta.first;
             this->path_cost.second += best_delta.second;
             applied=true;
+
+            printf("Best delta: %d, %d\n", best_delta.first, best_delta.second);
+            printf("Best move: ");
+            best_move->print();
+            printf("Current cost: %d, %d\n", path_cost.first, path_cost.second);
+            printf("-------- %d --------\n", move_count);
+            move_count++;
+
+            printf("Path 1: ");
+            for (auto v : paths.first){
+                printf("%d ", v);
+            }
+            printf("\nPath 2: ");
+            for (auto v : paths.second){
+                printf("%d ", v);
+            }
+            printf("\n");
         }
     }
 
-    // printf("Gen: %f\nEval: %f\nApply: %f\n", gen_mov_dur, eval_mov_dur, apply_mov_dur);
     return this->paths;
 }
