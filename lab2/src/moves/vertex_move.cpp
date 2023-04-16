@@ -116,19 +116,41 @@ TPathCost VertexMove::get_cost_delta(TPaths paths, int distance_matrix[][N]) {
 MoveState VertexMove::checkMoveState(TPaths paths) {
     // Only works for changing vertices between paths 0 and 1
 
-    int v1_idx = this->vertex_idxs.first;
+    int v1_idx = -1;
     int v1_id = this->vertex_ids.first;
+
+    // Look for new position of v1
+    for (int i = 0; i < paths.first.size(); i++) {
+        if (paths.first[i] == v1_id) {
+            v1_idx = i;
+            this->vertex_idxs.first = i;
+            break;
+        }
+    }
+
     int v1_pred_idx = (v1_idx == 0) ? (paths.first.size() - 1) : (v1_idx - 1);
     int v1_pred_id = this->adjacent_vertex_ids.first.first;
     int v1_next_idx = (v1_idx == (paths.first.size() - 1)) ? 0 : (v1_idx + 1);
     int v1_next_id = this->adjacent_vertex_ids.first.second;
 
+    int v2_idx = -1;
     int v2_id = this->vertex_ids.second;
-    int v2_idx = this->vertex_idxs.second;
+
+    for (int i = 0; i < paths.second.size(); i++) {
+        if (paths.second[i] == v2_id) {
+            v2_idx = i;
+            this->vertex_idxs.second = i;
+            break;
+        }
+    }
+
     int v2_pred_idx = (v2_idx == 0) ? (paths.second.size() - 1) : (v2_idx - 1);
     int v2_pred_id = this->adjacent_vertex_ids.second.first;
     int v2_next_idx = (v2_idx == (paths.second.size() - 1)) ? 0 : (v2_idx + 1);
     int v2_next_id = this->adjacent_vertex_ids.second.second;
+
+    if (v1_idx == -1 || v2_idx == -1)
+        return MoveState::NOT_APPLICABLE;
 
     if (((v1_id == paths.first[v1_idx]) && (v1_pred_id == paths.first[v1_pred_idx]) && (v1_next_id == paths.first[v1_next_idx])) &&
         ((v2_id == paths.second[v2_idx]) && (v2_pred_id == paths.second[v2_pred_idx]) && (v2_next_id == paths.second[v2_next_idx]))) 
