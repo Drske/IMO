@@ -278,7 +278,6 @@ vector<Move *> MoveGenerator::get_new_moves_after_move(TPaths paths, EdgeMove *e
 
 void MoveGenerator::add_vertex_move(TPaths paths, int i, int j, vector<Move *> &moves)
 {
-    printf("ADDING VERTEX MOVE: %d %d\n", paths.first[i], paths.second[j]);
     pair<int, int> path_ids(0, 1);
     pair<int, int> vertex_idxs(i, j);
     pair<int, int> vertex_ids(paths.first[i], paths.second[j]);
@@ -319,7 +318,6 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
 
 void MoveGenerator::add_edge_moves_after_move(TPath path, int path_id, vector<int> path_modified_idxs, vector<Move *> &moves)
 {
-    // add_edge_moves_from_path(path, path_id, moves);
     for (int i : path_modified_idxs)
     {        
         TEdge edge1_prev_idxs = (i == 0) ? make_pair((int)path.size() - 1, i) : make_pair(i - 1, i);
