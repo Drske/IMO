@@ -27,7 +27,10 @@ private:
     static void add_candidate_edge_moves_from_path(TPath path, int path_id, vector<Move *> &moves, int distance_matrix[][N], int max_candidates);
     static void add_candidate_vertex_moves_from_paths(TPaths paths, vector<Move *> &moves, int distance_matrix[][N], int max_candidates);
 
+    static void add_vertex_move(TPaths paths, int i, int j, vector<Move *> &moves);
+
     static pair<int, int> get_adjacent_vertex_ids(TPath path, int vertex_idx);
+    static pair<int, int> get_adjacent_vertex_idxs(TPath path, int vertex_idx);
 };
 
 #endif
