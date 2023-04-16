@@ -41,11 +41,8 @@ vector<Move *> MoveGenerator::get_second_neighbourhood_moves(TPaths paths)
     vector<Move *> moves;
 
     add_edge_moves_from_path(paths.first, 0, moves);
-    // printf("Second neighbourhood after adding edge moves (1):\t%lu\n", moves.size());
     add_edge_moves_from_path(paths.second, 1, moves);
-    // printf("Second neighbourhood after adding edge moves (2):\t%lu\n", moves.size());
     add_vertex_moves_from_paths(paths, moves);
-    // printf("Second neighbourhood after adding vertex moves (1):\t%lu\n", moves.size());
 
     return moves;
 }
@@ -55,11 +52,8 @@ vector<Move *> MoveGenerator::get_second_neighbourhood_candidate_moves(TPaths pa
     vector<Move *> moves;
 
     add_candidate_edge_moves_from_path(paths.first, 0, moves, distance_matrix, max_candidates);
-    // printf("Candidate second neighbourhood after adding edge moves (1):\t%lu\n", moves.size());
     add_candidate_edge_moves_from_path(paths.second, 1, moves, distance_matrix, max_candidates);
-    // printf("Candidate second neighbourhood after adding edge moves (2):\t%lu\n", moves.size());
     add_candidate_vertex_moves_from_paths(paths, moves, distance_matrix, max_candidates);
-    // printf("Candidate second neighbourhood after adding vertex moves (1):\t%lu\n", moves.size());
 
     return moves;
 }

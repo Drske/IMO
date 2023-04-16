@@ -48,8 +48,6 @@ TPaths QLSSolver::solve()
     Move *best_move;
     TPathCost best_delta;
 
-    int move_count = 0;
-
     while (applied)
     {
         applied = false;
@@ -114,27 +112,7 @@ TPaths QLSSolver::solve()
             {
                 LM.push(*it);
             }
-
-            printf("Best delta: %d, %d\n", best_delta.first, best_delta.second);
-            printf("Best move: ");
-            best_move->print();
-            printf("Current cost: %d, %d\n", path_cost.first, path_cost.second);
-            printf("-------- %d --------\n", move_count);
-            move_count++;
-
-            printf("Path 1: ");
-            for (auto v : paths.first)
-            {
-                printf("%d ", v);
-            }
-            printf("\nPath 2: ");
-            for (auto v : paths.second)
-            {
-                printf("%d ", v);
-            }
-            printf("\n");
         }
     }
-
     return this->paths;
 }

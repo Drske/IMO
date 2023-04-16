@@ -166,22 +166,8 @@ MoveState VertexMove::checkMoveState(TPaths paths)
             vertex_idxs.second = i;
         }
     }
-    bool verbose = false;
 
     // Only works for changing vertices between paths 0 and 1
-    if ((vertex_ids.first == 30 && vertex_ids.second == 50) || (vertex_ids.first == 50 && vertex_ids.second == 50))
-    {
-        verbose = true;
-        this->print();
-        int pred_v1, succ_v1, pred_v2, succ_v2;
-
-        vertex_idxs.first == 0 ? pred_v1 = paths.first.size() - 1 : pred_v1 = vertex_idxs.first - 1;
-        vertex_idxs.first == paths.first.size() - 1 ? succ_v1 = 0 : succ_v1 = vertex_idxs.first + 1;
-
-        vertex_idxs.second == 0 ? pred_v2 = paths.second.size() - 1 : pred_v2 = vertex_idxs.second - 1;
-        vertex_idxs.second == paths.second.size() - 1 ? succ_v2 = 0 : succ_v2 = vertex_idxs.second + 1;
-    }
-
     int v1_idx = this->vertex_idxs.first;
     int v1_id = this->vertex_ids.first;
 
@@ -215,11 +201,6 @@ MoveState VertexMove::checkMoveState(TPaths paths)
     int v2_next_idx = (v2_idx == (paths.second.size() - 1)) ? 0 : (v2_idx + 1);
     int v2_next_id = this->adjacent_vertex_ids.second.second;
 
-    if (verbose){
-    //printf("OTOCZENIE V1 (MD): %d %d %d\n", v1_pred_id, v1_id, v1_next_id);
-    //printf("OTOCZENIE V2 (MD): %d %d %d\n", v2_pred_id, v2_id, v2_next_id);
-    }
-
     if (v1_id != paths.first[v1_idx] || v2_id != paths.second[v2_idx])
         return MoveState::NOT_APPLICABLE;
 
@@ -232,43 +213,6 @@ MoveState VertexMove::checkMoveState(TPaths paths)
         return MoveState::NOT_APPLICABLE;
 
     return MoveState::APPLICABLE;
-
-    // if (((v1_id == paths.first[v1_idx]) && (v1_pred_id == paths.first[v1_pred_idx]) && (v1_next_id == paths.first[v1_next_idx])) &&
-    //     ((v2_id == paths.second[v2_idx]) && (v2_pred_id == paths.second[v2_pred_idx]) && (v2_next_id == paths.second[v2_next_idx])))
-    // {
-    //     if (verbose)
-    //         printf("APLICABLE 1\n");
-    //     return MoveState::APPLICABLE;
-    // }
-
-    // if (((v1_id == paths.first[v1_idx]) && (v1_pred_id == paths.first[v1_next_idx]) && (v1_next_id == paths.first[v1_pred_idx])) &&
-    //     ((v2_id == paths.second[v2_idx]) && (v2_pred_id == paths.second[v2_next_idx]) && (v2_next_id == paths.second[v2_pred_idx])))
-    // {
-    //     if (verbose)
-    //         printf("APLICABLE 2\n");
-    //     return MoveState::APPLICABLE;
-    // }
-
-    // if (((v2_id == paths.first[v1_idx]) && (v2_pred_id == paths.first[v1_pred_idx]) && (v2_next_id == paths.first[v1_next_idx])) &&
-    //     ((v1_id == paths.second[v2_idx]) && (v1_pred_id == paths.second[v2_pred_idx]) && (v1_next_id == paths.second[v2_next_idx])))
-    // {
-    //     if (verbose)
-    //         printf("APLICABLE 3\n");
-    //     return MoveState::APPLICABLE;
-    // }
-
-    // if (((v2_id == paths.first[v1_idx]) && (v2_pred_id == paths.first[v1_next_idx]) && (v2_next_id == paths.first[v1_pred_idx])) &&
-    //     ((v1_id == paths.second[v2_idx]) && (v1_pred_id == paths.second[v2_next_idx]) && (v1_next_id == paths.second[v2_pred_idx])))
-    // {
-    //     if (verbose)
-    //         printf("APLICABLE 4\n");
-    //     return MoveState::APPLICABLE;
-    // }
-    // if (verbose)
-    // {
-    //     printf("NOT APPLICABLE\n");
-    // }
-    // return MoveState::NOT_APPLICABLE;
 }
 
 pair<int, int> VertexMove::get_path_ids()
