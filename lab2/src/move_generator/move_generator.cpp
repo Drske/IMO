@@ -302,14 +302,9 @@ void MoveGenerator::add_vertex_moves_after_move(TPaths paths, pair<vector<int>, 
 void MoveGenerator::add_edge_moves_after_move(TPath path, int path_id, vector<int> path_modified_idxs, vector<Move *> &moves)
 {
     for (int i : path_modified_idxs)
-    {
-        TEdge edge1_prev_idxs(i - 1, i);
-        TEdge edge1_next_idxs(i, i + 1);
-
-        if (i == 0)
-            edge1_prev_idxs = make_pair(path.size() - 1, i);
-        else if (i == (path.size() - 1))
-            edge1_next_idxs = make_pair(i, 0);
+    {        
+        TEdge edge1_prev_idxs = (i == 0) ? make_pair((int)path.size() - 1, i) : make_pair(i - 1, i);
+        TEdge edge1_next_idxs = (i == ((int)path.size() - 1)) ? make_pair(i, 0) : make_pair(i, i + 1);
 
         vector<TEdge> edges1_idxs = {edge1_prev_idxs, edge1_next_idxs};
 
@@ -319,13 +314,8 @@ void MoveGenerator::add_edge_moves_after_move(TPath path, int path_id, vector<in
 
             for (int j = 0; j < path.size(); j++)
             {
-                TEdge edge2_idxs;
+                TEdge edge2_idxs = (j == (path.size() - 1)) ? make_pair(j, 0) : make_pair(j, j + 1);
                 TEdge edge2_ids;
-
-                if (j == (path.size() - 1))
-                    edge2_idxs = make_pair(j, 0);
-                else
-                    edge2_idxs = make_pair(j, j + 1);
 
                 int start_idxs_diff = edge1_idxs.first - edge2_idxs.first;
 
