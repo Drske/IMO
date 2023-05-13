@@ -20,12 +20,14 @@ TPaths CLSSolver::solve()
     Move *best_move;
     TPathCost best_delta;
 
+    vector<Move *> moves;
+    
     while (applied)
     {
         applied = false;
         best_delta = make_pair(INT_MAX / 2, INT_MAX / 2);
 
-        vector<Move *> moves = get_moves(this->paths, this->distance_matrix, this->max_candidates);
+        moves = get_moves(this->paths, this->distance_matrix, this->max_candidates);
 
         for (vector<Move *>::iterator it = moves.begin(); it != moves.end(); it++)
         {

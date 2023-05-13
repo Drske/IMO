@@ -19,6 +19,7 @@
 #include "solvers/lssolvers/qls_tsp_solver.h"
 #include "solvers/lssolvers/qcls_tsp_solver.h"
 #include "solvers/lssolvers/msls_tsp_solver.h"
+#include "solvers/lssolvers/drls_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -117,6 +118,7 @@ int main(int argc, char **argv)
     solvers["qc-ls"] = new QCLSSolver();
     solvers["greedy-cycle"] = new GCSolver();
     solvers["ms-ls"] = new MSLSSolver();
+    solvers["dr-ls"] = new DRLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
@@ -268,6 +270,13 @@ int main(int argc, char **argv)
     (*init_sol_gen).set_start_vertex(start_vertex - 1);
     (*init_sol_gen).set_iterations(1);
 
+    (*ls_solver).set_iterations(iterations);
+    (*ls_solver).load_data(distance_matrix);
+    (*ls_solver).set_iterations(iterations);
+    (*ls_solver).set_neighbourhood(neighbourhood);
+    (*ls_solver).set_start_vertex(start_vertex);
+    (*ls_solver).set_max_candidates(max_candidates);
+
     TPaths initial_solution = (*init_sol_gen).solve();
     TPathCost initial_cost = (*init_sol_gen).get_cost();
 
@@ -278,7 +287,7 @@ int main(int argc, char **argv)
         (*solver).set_initial_solution(initial_solution);
         (*solver).set_initial_cost(initial_cost);
     }
-    
+
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_start_vertex(start_vertex);
@@ -287,11 +296,10 @@ int main(int argc, char **argv)
     (*solver).set_local_search_solver(ls_solver);
     (*solver).set_constructive_solver(constructive_solver);
 
-    (*ls_solver).load_data(distance_matrix);
-    (*ls_solver).set_iterations(iterations);
-    (*ls_solver).set_neighbourhood(neighbourhood);
-    (*ls_solver).set_start_vertex(start_vertex);
-    (*ls_solver).set_max_candidates(max_candidates);
+    (*constructive_solver).load_data(distance_matrix);
+    (*constructive_solver).set_iterations(iterations);
+    (*constructive_solver).set_neighbourhood(neighbourhood);
+    (*constructive_solver).set_start_vertex(-1);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();
@@ -308,18 +316,14 @@ int main(int argc, char **argv)
     for (int i = 0; i < paths.first.size() - 1; i++)
     {
         real_cost += distance_matrix[paths.first[i]][paths.first[i + 1]];
-        // printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[i]][paths.first[i + 1]], paths.first[i], paths.first[i + 1]);
     }
     real_cost += distance_matrix[paths.first[N / 2 - 1]][paths.first[0]];
-    // printf("(1) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.first[N / 2 - 1]][paths.first[0]], paths.first[N / 2 - 1], paths.first[0]);
 
     for (int i = 0; i < paths.second.size() - 1; i++)
     {
         real_cost += distance_matrix[paths.second[i]][paths.second[i + 1]];
-        // printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[i]][paths.second[i + 1]], paths.second[i], paths.second[i + 1]);
     }
     real_cost += distance_matrix[paths.second[N / 2 - 1]][paths.second[0]];
-    // printf("(2) Adding cost (%d) of path from %d to %d\n", distance_matrix[paths.second[N / 2 - 1]][paths.second[0]], paths.second[N / 2 - 1], paths.second[0]);
 
     printf("Evaluated: %d, real: %d\n", evaluated_cost, real_cost);
 

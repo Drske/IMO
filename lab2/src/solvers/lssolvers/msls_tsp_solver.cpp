@@ -23,7 +23,6 @@ TPaths MSLSSolver::solve()
         this->local_search_solver->set_initial_solution(initial_solution);
         this->local_search_solver->set_initial_cost(initial_cost);
         
-        // printf("%d\n", init_sol_gen->start_vertex);
         printf("%d %d\n", initial_cost.first, initial_cost.second);
         
         TPaths local_search_solution = this->local_search_solver->solve();
