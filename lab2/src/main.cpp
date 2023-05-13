@@ -18,6 +18,7 @@
 #include "solvers/lssolvers/cls_tsp_solver.h"
 #include "solvers/lssolvers/qls_tsp_solver.h"
 #include "solvers/lssolvers/qcls_tsp_solver.h"
+#include "solvers/lssolvers/msls_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -115,13 +116,14 @@ int main(int argc, char **argv)
     solvers["candidate-ls"] = new CLSSolver();
     solvers["qc-ls"] = new QCLSSolver();
     solvers["greedy-cycle"] = new GCSolver();
+    solvers["ms-ls"] = new MSLSSolver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
 
-    TSPSolver *solver, *init_sol_gen;
+    TSPSolver *solver, *init_sol_gen, *ls_solver, *constructive_solver;
 
-    string solver_name, init_sol_gen_name;
+    string solver_name, init_sol_gen_name, ls_solver_name, constructive_solver_name;
     string data_path;
     string output_path;
     string neighbourhood;
@@ -146,6 +148,26 @@ int main(int argc, char **argv)
     else
     {
         cout << "No initial solution generator provided";
+        return 1;
+    }
+    if (cmd_option_provided("-ls-solver", argc, argv))
+    {
+        ls_solver_name = get_cmd_option("-ls-solver", argc, argv);
+        ls_solver = solvers[ls_solver_name];
+    }
+    else
+    {
+        cout << "No local search solver provided";
+        return 1;
+    }
+    if (cmd_option_provided("-con-solver", argc, argv))
+    {
+        constructive_solver_name = get_cmd_option("-con-solver", argc, argv);
+        constructive_solver = solvers[constructive_solver_name];
+    }
+    else
+    {
+        cout << "No local search solver provided";
         return 1;
     }
     if (cmd_option_provided("-neigh", argc, argv))
@@ -261,6 +283,15 @@ int main(int argc, char **argv)
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_start_vertex(start_vertex);
     (*solver).set_max_candidates(max_candidates);
+    (*solver).set_init_sol_gen(init_sol_gen);
+    (*solver).set_local_search_solver(ls_solver);
+    (*solver).set_constructive_solver(constructive_solver);
+
+    (*ls_solver).load_data(distance_matrix);
+    (*ls_solver).set_iterations(iterations);
+    (*ls_solver).set_neighbourhood(neighbourhood);
+    (*ls_solver).set_start_vertex(start_vertex);
+    (*ls_solver).set_max_candidates(max_candidates);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();

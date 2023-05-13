@@ -24,6 +24,10 @@ public:
     void set_initial_cost(TPathCost);
     void set_max_candidates(int);
 
+    void set_local_search_solver(TSPSolver*);
+    void set_init_sol_gen(TSPSolver*);
+    void set_constructive_solver(TSPSolver*);
+
     TPathCost get_cost();
 
 protected:
@@ -36,6 +40,9 @@ protected:
     TPaths paths;
     TPathLength path_length;
     TPathCost path_cost;
+    TSPSolver* local_search_solver;
+    TSPSolver* init_sol_gen;
+    TSPSolver* constructive_solver;
 };
 
 #endif
