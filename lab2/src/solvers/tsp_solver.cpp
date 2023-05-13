@@ -14,6 +14,10 @@ TPathCost TSPSolver::get_cost(){
     return this->path_cost;
 }
 
+TPathLength TSPSolver::get_path_length(){
+    return this->path_length;
+}
+
 void TSPSolver::set_iterations(int iterations){
     this->iterations = iterations;
 }
@@ -32,6 +36,10 @@ void TSPSolver::set_initial_solution(TPaths initial_solution){
 
 void TSPSolver::set_initial_cost(TPathCost intitial_solution_cost){
     this->path_cost = intitial_solution_cost;
+}
+
+void TSPSolver::set_path_length(TPathLength path_length){
+    this->path_length = path_length;
 }
 
 void TSPSolver::set_max_candidates(int no){
@@ -143,4 +151,9 @@ void TSPSolver::reset_path_cost(){
     }
 
     printf("Set initial GC cost: %d %d\n", this->path_cost.first, this->path_cost.second);
+}
+
+void TSPSolver::clear_paths() {
+    this->paths.first.clear();
+    this->paths.second.clear();
 }

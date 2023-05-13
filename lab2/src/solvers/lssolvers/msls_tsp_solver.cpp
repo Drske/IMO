@@ -15,16 +15,20 @@ TPaths MSLSSolver::solve()
     this->path_cost = make_pair(INT_MAX / 2, INT_MAX / 2);
 
     for (int j = 0; j < this->iterations; j++) {
+        this->init_sol_gen->clear_paths();
+        this->init_sol_gen->set_path_length(make_pair(0, 0));
         this->init_sol_gen->set_initial_cost(make_pair(0, 0));
         this->init_sol_gen->set_start_vertex(this->start_vertex + j);
 
         TPaths initial_solution = this->init_sol_gen->solve();
         TPathCost initial_cost = this->init_sol_gen->get_cost();
+        TPathLength initial_length = this->init_sol_gen->get_path_length();
+
         this->local_search_solver->set_initial_solution(initial_solution);
         this->local_search_solver->set_initial_cost(initial_cost);
         
-        printf("%d %d\n", initial_cost.first, initial_cost.second);
-        
+        this->local_search_solver->set_path_length(initial_length);
+
         TPaths local_search_solution = this->local_search_solver->solve();
         TPathCost local_search_cost = this->local_search_solver->get_cost();
 

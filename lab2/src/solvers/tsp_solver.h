@@ -15,7 +15,7 @@ public:
     void add_vertex_to_path(int path_no, int vertex_id, int index = -1);
     int find_furthest_vertex(int vertex_id);
     int find_nearest_vertex(int vertex_id);
-    
+    void clear_paths();
 
     void set_iterations(int);
     void set_neighbourhood(string);
@@ -28,11 +28,13 @@ public:
     void reset_path_lengths();
     void reset_path_cost();
 
+    void set_path_length(TPathLength);
     void set_local_search_solver(TSPSolver*);
     void set_init_sol_gen(TSPSolver*);
     void set_constructive_solver(TSPSolver*);
 
     TPathCost get_cost();
+    TPathLength get_path_length();
 
 protected:
     int iterations;
