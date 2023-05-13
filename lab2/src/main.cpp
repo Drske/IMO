@@ -19,6 +19,7 @@
 #include "solvers/lssolvers/qls_tsp_solver.h"
 #include "solvers/lssolvers/qcls_tsp_solver.h"
 #include "solvers/lssolvers/msls_tsp_solver.h"
+#include "solvers/lssolvers/ils1_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -117,6 +118,7 @@ int main(int argc, char **argv)
     solvers["qc-ls"] = new QCLSSolver();
     solvers["greedy-cycle"] = new GCSolver();
     solvers["ms-ls"] = new MSLSSolver();
+    solvers["ils1"] = new ILS1Solver();
 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();

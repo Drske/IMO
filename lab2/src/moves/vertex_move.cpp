@@ -13,30 +13,6 @@ void VertexMove::apply(TPaths &paths)
     int p1 = this->path_ids.first, p2 = this->path_ids.second;
     int v1 = this->vertex_idxs.first, v2 = this->vertex_idxs.second;
 
-    if (vertex_ids.first == 30)
-    {
-        // printf("APPLY\n");
-        int pred_v1, succ_v1, pred_v2, succ_v2;
-
-        for (int i = 0; i < paths.first.size(); i++)
-        {
-            if (paths.first[i] == vertex_ids.first)
-            {
-                i == 0 ? pred_v1 = paths.first.size() - 1 : pred_v1 = i - 1;
-                i == paths.first.size() - 1 ? succ_v1 = 0 : succ_v1 = i + 1;
-            }
-        }
-
-        for (int i = 0; i < paths.second.size(); i++)
-        {
-            if (paths.second[i] == vertex_ids.second)
-            {
-                i == 0 ? pred_v2 = paths.second.size() - 1 : pred_v2 = i - 1;
-                i == paths.second.size() - 1 ? succ_v2 = 0 : succ_v2 = i + 1;
-            }
-        }
-    }
-
     if (p1 == p2 && p2 == 0)
         swap(paths.first[v1], paths.first[v2]);
     else if (p1 == p2 && p2 == 1)
