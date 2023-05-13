@@ -14,6 +14,10 @@ TPathCost TSPSolver::get_cost(){
     return this->path_cost;
 }
 
+TPathLength TSPSolver::get_path_length(){
+    return this->path_length;
+}
+
 void TSPSolver::set_iterations(int iterations){
     this->iterations = iterations;
 }
@@ -32,6 +36,10 @@ void TSPSolver::set_initial_solution(TPaths initial_solution){
 
 void TSPSolver::set_initial_cost(TPathCost intitial_solution_cost){
     this->path_cost = intitial_solution_cost;
+}
+
+void TSPSolver::set_path_length(TPathLength path_length){
+    this->path_length = path_length;
 }
 
 void TSPSolver::set_max_candidates(int no){
@@ -107,4 +115,9 @@ int TSPSolver::find_nearest_vertex(int vertex_id) {
     }
 
     return nearest_vertex_id;
+}
+
+void TSPSolver::clear_paths() {
+    this->paths.first.clear();
+    this->paths.second.clear();
 }

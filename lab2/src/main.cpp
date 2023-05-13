@@ -278,6 +278,14 @@ int main(int argc, char **argv)
         (*solver).set_initial_solution(initial_solution);
         (*solver).set_initial_cost(initial_cost);
     }
+
+    (*ls_solver).set_initial_solution(initial_solution);
+    (*ls_solver).set_initial_cost(initial_cost);
+    (*ls_solver).load_data(distance_matrix);
+    (*ls_solver).set_iterations(iterations);
+    (*ls_solver).set_neighbourhood(neighbourhood);
+    (*ls_solver).set_start_vertex(start_vertex);
+    (*ls_solver).set_max_candidates(max_candidates);
     
     (*solver).set_iterations(iterations);
     (*solver).set_neighbourhood(neighbourhood);
@@ -286,12 +294,6 @@ int main(int argc, char **argv)
     (*solver).set_init_sol_gen(init_sol_gen);
     (*solver).set_local_search_solver(ls_solver);
     (*solver).set_constructive_solver(constructive_solver);
-
-    (*ls_solver).load_data(distance_matrix);
-    (*ls_solver).set_iterations(iterations);
-    (*ls_solver).set_neighbourhood(neighbourhood);
-    (*ls_solver).set_start_vertex(start_vertex);
-    (*ls_solver).set_max_candidates(max_candidates);
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
     TPaths paths = (*solver).solve();
