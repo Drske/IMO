@@ -23,6 +23,11 @@ public:
     void set_initial_solution(TPaths);
     void set_initial_cost(TPathCost);
     void set_max_candidates(int);
+    
+    void reset_used_vertices();
+    void reset_path_lengths();
+    void reset_path_cost();
+
     void set_path_length(TPathLength);
     void set_local_search_solver(TSPSolver*);
     void set_init_sol_gen(TSPSolver*);

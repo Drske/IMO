@@ -117,6 +117,42 @@ int TSPSolver::find_nearest_vertex(int vertex_id) {
     return nearest_vertex_id;
 }
 
+void TSPSolver::reset_used_vertices(){
+    memset(this->used_vertices, 0, sizeof(this->used_vertices));
+    
+    for (int i = 0; i < this->paths.first.size(); i++){
+        this->used_vertices[this->paths.first[i]] = true;
+    }
+
+    for (int i = 0; i < this->paths.second.size(); i++){
+        this->used_vertices[this->paths.second[i]] = true;
+    }
+}
+
+void TSPSolver::reset_path_lengths(){
+    this->path_length.first = this->paths.first.size();
+    this->path_length.second = this->paths.second.size();
+
+    printf("Set initial GC lenghts: %d %d\n", this->path_length.first, this->path_length.second);
+}
+
+void TSPSolver::reset_path_cost(){
+    this->path_cost.first = 0;
+    this->path_cost.second = 0;
+
+    for (int i = 0; i < this->paths.first.size(); i++){
+        int n_i = (i + 1) % this->paths.first.size();
+        this->path_cost.first += this->distance_matrix[this->paths.first[i]][this->paths.first[n_i]];
+    }
+
+    for (int i = 0; i < this->paths.second.size(); i++){
+        int n_i = (i + 1) % this->paths.second.size();
+        this->path_cost.second += this->distance_matrix[this->paths.second[i]][this->paths.second[n_i]];
+    }
+
+    printf("Set initial GC cost: %d %d\n", this->path_cost.first, this->path_cost.second);
+}
+
 void TSPSolver::clear_paths() {
     this->paths.first.clear();
     this->paths.second.clear();

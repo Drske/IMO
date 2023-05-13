@@ -26,6 +26,7 @@ TPaths MSLSSolver::solve()
 
         this->local_search_solver->set_initial_solution(initial_solution);
         this->local_search_solver->set_initial_cost(initial_cost);
+        
         this->local_search_solver->set_path_length(initial_length);
 
         TPaths local_search_solution = this->local_search_solver->solve();
