@@ -27,7 +27,7 @@ public:
 
 TPaths QLSSolver::solve()
 {
-    printf("Solving Queue Local Search\n");
+    // printf("Solving Queue Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();

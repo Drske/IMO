@@ -31,7 +31,7 @@ void RLSSolver::generate_fully_random_solution(default_random_engine rnd_e)
 
 TPaths RLSSolver::solve()
 {
-    printf("Solving Random Walk Local Search\n");
+    // printf("Solving Random Walk Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
     default_random_engine rnd_e(this->start_vertex);

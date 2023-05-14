@@ -12,6 +12,7 @@
            -start-vertex 1 \
            -init-sol-gen random-walk \
            -neigh N2 \
-           -iterations 1000 \
+           -iterations 100 \
            -ls-solver queue-ls \
-           -con-solver greedy-cycle
+           -con-solver greedy-cycle \
+           -use-ls-to-repair false

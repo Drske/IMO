@@ -74,7 +74,9 @@ void save_results_to_json(string data_path,
                           TPathCost cost,
                           TPathCost initial_cost,
                           double duration,
-                          int max_candidates)
+                          int max_candidates,
+                          int iterations,
+                          bool use_ls_to_repair)
 
 {
     size_t pos = data_path.find_last_of("/");
@@ -88,6 +90,8 @@ void save_results_to_json(string data_path,
     j["start-vertex"] = start_vertex;
     j["duration"] = duration;
     j["max-candidates"] = max_candidates;
+    j["iterations"] = iterations;
+    j["use-ls-to-repair"] = use_ls_to_repair;
     j["cost"] = {
         {"first", cost.first},
         {"second", cost.second}};
@@ -214,6 +218,9 @@ int main(int argc, char **argv)
         {
             use_ls_to_repair = true;
         }
+        else{
+            use_ls_to_repair = false;
+        }
     }
     else
     {
@@ -321,7 +328,7 @@ int main(int argc, char **argv)
 
     TPathCost cost = (*solver).get_cost();
 
-    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration, max_candidates);
+    save_results_to_json(data_path, output_path, solver_name, init_sol_gen_name, neighbourhood, start_vertex, paths, initial_solution, cost, initial_cost, duration, max_candidates, iterations, use_ls_to_repair);
 
     int evaluated_cost = cost.first + cost.second;
     int real_cost = 0;

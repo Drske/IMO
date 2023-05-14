@@ -87,7 +87,7 @@ TPaths ILS1Solver::solve()
     this->paths = this->local_search_solver->solve();
     this->path_cost = this->local_search_solver->get_cost();
 
-    printf("Initital cost: %d %d\n", this->path_cost.first, this->path_cost.second);
+    // printf("Initital cost: %d %d\n", this->path_cost.first, this->path_cost.second);
 
     for (int i = 0; i < this->iterations; i++) {
         TPaths base_paths = this->paths;
