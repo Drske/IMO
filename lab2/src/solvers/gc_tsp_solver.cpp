@@ -2,7 +2,7 @@
 
 TPaths GCSolver::solve()
 {
-    printf("Solving Greedy Cycle\n");
+    // printf("Solving Greedy Cycle\n");
 
     int start_vertex2 = this->find_furthest_vertex(this->start_vertex);
 

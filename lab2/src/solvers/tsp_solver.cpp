@@ -58,6 +58,10 @@ void TSPSolver::set_constructive_solver(TSPSolver* solver){
     this->constructive_solver = solver;
 }
 
+void TSPSolver::set_use_ls_to_repair(bool use_ls_to_repair){
+    this->use_ls_to_repair = use_ls_to_repair;
+}
+
 void TSPSolver::add_vertex_to_path(int path_no, int vertex_id, int index){
     if (path_no == 1) {
         if ((index == -1) || index == this->path_length.first)
@@ -127,19 +131,11 @@ void TSPSolver::reset_used_vertices(){
     for (int i = 0; i < this->paths.second.size(); i++){
         this->used_vertices[this->paths.second[i]] = true;
     }
-
-    // for (int i = 0; i < N; i++){
-    //     printf("(%d, %d) ", i, used_vertices[i]);
-    // }
-    // printf("\n");
-
 }
 
 void TSPSolver::reset_path_lengths(){
     this->path_length.first = this->paths.first.size();
     this->path_length.second = this->paths.second.size();
-
-    // printf("Set initial GC lenghts: %d %d\n", this->path_length.first, this->path_length.second);
 }
 
 void TSPSolver::reset_path_cost(){
@@ -155,9 +151,7 @@ void TSPSolver::reset_path_cost(){
         int n_i = (i + 1) % this->paths.second.size();
         this->path_cost.second += this->distance_matrix[this->paths.second[i]][this->paths.second[n_i]];
     }
-
-    // printf("Set initial GC cost: %d %d\n", this->path_cost.first, this->path_cost.second);
-}
+    }
 
 void TSPSolver::clear_paths() {
     this->paths.first.clear();

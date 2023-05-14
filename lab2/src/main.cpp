@@ -133,6 +133,7 @@ int main(int argc, char **argv)
     string neighbourhood;
 
     int start_vertex, iterations, max_candidates;
+    bool use_ls_to_repair;
 
     if (cmd_option_provided("-solver", argc, argv))
     {
@@ -151,8 +152,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "No initial solution generator provided";
-        return 1;
+        init_sol_gen = init_sol_gens["random-walk"];
     }
     if (cmd_option_provided("-ls-solver", argc, argv))
     {
@@ -161,8 +161,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "No local search solver provided";
-        return 1;
+        ls_solver = solvers["queue-ls"];
     }
     if (cmd_option_provided("-con-solver", argc, argv))
     {
@@ -171,8 +170,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "No local search solver provided";
-        return 1;
+        constructive_solver = solvers["greedy-cycle"];
     }
     if (cmd_option_provided("-neigh", argc, argv))
     {
@@ -180,8 +178,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "No neighbourhood provided";
-        return 1;
+        neighbourhood = "N2";
     }
     if (cmd_option_provided("-iterations", argc, argv))
     {
@@ -210,6 +207,17 @@ int main(int argc, char **argv)
     else
     {
         max_candidates = 10;
+    }
+    if (cmd_option_provided("-use-ls-to-repair", argc, argv))
+    {
+        if (get_cmd_option("-use-ls-to-repair", argc, argv) == "true")
+        {
+            use_ls_to_repair = true;
+        }
+    }
+    else
+    {
+        use_ls_to_repair = false;
     }
     if (cmd_option_provided("-in", argc, argv))
     {
@@ -282,10 +290,9 @@ int main(int argc, char **argv)
     TPaths initial_solution = (*init_sol_gen).solve();
     TPathCost initial_cost = (*init_sol_gen).get_cost();
 
-    printf("Type %s\n", typeid(solver).name());
-
     (*solver).load_data(distance_matrix);
-    if (solver_name != "greedy-cycle"){
+    if (solver_name != "greedy-cycle")
+    {
         (*solver).set_initial_solution(initial_solution);
         (*solver).set_initial_cost(initial_cost);
     }
@@ -294,10 +301,11 @@ int main(int argc, char **argv)
     (*solver).set_neighbourhood(neighbourhood);
     (*solver).set_start_vertex(start_vertex);
     (*solver).set_max_candidates(max_candidates);
+    (*solver).set_use_ls_to_repair(use_ls_to_repair);
     (*solver).set_init_sol_gen(init_sol_gen);
     (*solver).set_local_search_solver(ls_solver);
     (*solver).set_constructive_solver(constructive_solver);
-
+    
     (*constructive_solver).load_data(distance_matrix);
     (*constructive_solver).set_iterations(iterations);
     (*constructive_solver).set_neighbourhood(neighbourhood);

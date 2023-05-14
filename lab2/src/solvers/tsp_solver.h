@@ -32,11 +32,13 @@ public:
     void set_local_search_solver(TSPSolver*);
     void set_init_sol_gen(TSPSolver*);
     void set_constructive_solver(TSPSolver*);
+    void set_use_ls_to_repair(bool);
 
     TPathCost get_cost();
     TPathLength get_path_length();
 
 protected:
+    bool use_ls_to_repair;
     int iterations;
     string neighbourhood;
     int start_vertex;
