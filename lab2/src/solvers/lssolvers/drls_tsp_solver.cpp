@@ -13,11 +13,11 @@ TPaths DRLSSolver::solve()
 {
     printf("Solving Destroy Repair Large Scale Local Search\n");
 
-    this->local_search_solver->set_initial_solution(this->paths);
-    this->local_search_solver->set_initial_cost(this->path_cost);
-    this->paths = this->local_search_solver->solve();
+    // this->init_sol_gen->set_initial_solution(this->paths);
+    // this->init_sol_gen->set_initial_cost(this->path_cost);
+    // this->paths = this->init_sol_gen->solve();
 
-    this->path_cost = this->local_search_solver->get_cost();
+    // this->path_cost = this->init_sol_gen->get_cost();
 
     this->path_length.first = N / 2;
     this->path_length.second = N / 2;
@@ -32,7 +32,7 @@ TPaths DRLSSolver::solve()
             this->paths = repaired_solution.first;
             this->path_cost = repaired_solution.second;
 
-            printf("Result improved to: (%d, %d)\n", this->path_cost.first, this->path_cost.second);
+            // printf("Result improved to: (%d, %d)\n", this->path_cost.first, this->path_cost.second);
         }
     }
 
@@ -65,28 +65,28 @@ TPaths DRLSSolver::destroy()
         if (path_idx == 1 && cycles.second[vertex_idx] == -1)
             continue;
 
-        printf("Removing from path %d, starting from %d, length %d\n", path_idx, vertex_idx, path_length);
-        printf("Before removal:\n");
-        printf("path 0:");
-        for (int i = 0; i < cycles.first.size(); i++)
-            printf("%d ", cycles.first[i]);
-        printf("\n");
-        printf("path 1:");
-        for (int i = 0; i < cycles.second.size(); i++)
-            printf("%d ", cycles.second[i]);
-        printf("\n");
+        // printf("Removing from path %d, starting from %d, length %d\n", path_idx, vertex_idx, path_length);
+        // printf("Before removal:\n");
+        // printf("path 0:");
+        // for (int i = 0; i < cycles.first.size(); i++)
+        //     printf("%d ", cycles.first[i]);
+        // printf("\n");
+        // printf("path 1:");
+        // for (int i = 0; i < cycles.second.size(); i++)
+        //     printf("%d ", cycles.second[i]);
+        // printf("\n");
 
         cycles = this->remove_path_from_cycle(cycles, path_idx, vertex_idx, path_length);
 
-        printf("After removal:\n");
-        printf("path 0: ");
-        for (int i = 0; i < cycles.first.size(); i++)
-            printf("%d ", cycles.first[i]);
-        printf("\n");
-        printf("path 1: ");
-        for (int i = 0; i < cycles.second.size(); i++)
-            printf("%d ", cycles.second[i]);
-        printf("\n");
+        // printf("After removal:\n");
+        // printf("path 0: ");
+        // for (int i = 0; i < cycles.first.size(); i++)
+        //     printf("%d ", cycles.first[i]);
+        // printf("\n");
+        // printf("path 1: ");
+        // for (int i = 0; i < cycles.second.size(); i++)
+        //     printf("%d ", cycles.second[i]);
+        // printf("\n");
 
         for (int i = 0; i < N / 2; i++)
         {
@@ -94,10 +94,10 @@ TPaths DRLSSolver::destroy()
             vertices_removed += (cycles.second[i] == -1) ? 1 : 0;
         }
 
-        printf("Vertices to remove: %d, vertices_removed: %d\n", vertices_to_remove, vertices_removed);
+        // printf("Vertices to remove: %d, vertices_removed: %d\n", vertices_to_remove, vertices_removed);
     }
 
-    printf("Closing solution\n");
+    // printf("Closing solution\n");
     cycles = this->close_cycles(cycles);
 
     return cycles;
@@ -105,16 +105,16 @@ TPaths DRLSSolver::destroy()
 
 TSolution DRLSSolver::repair(TPaths cycles)
 {
-    printf("-=Solution passed to GC=-\n");
-    printf("path 0: ");
-    for (int i = 0; i < cycles.first.size(); i++)
-        printf("%d ", cycles.first[i]);
-    printf("\n");
-    printf("path 1: ");
-    for (int i = 0; i < cycles.second.size(); i++)
-        printf("%d ", cycles.second[i]);
-    printf("\n");
-    printf("Path lengths before GC: %d, %d\n", cycles.first.size(), cycles.second.size());
+    // printf("-=Solution passed to GC=-\n");
+    // printf("path 0: ");
+    // for (int i = 0; i < cycles.first.size(); i++)
+    //     printf("%d ", cycles.first[i]);
+    // printf("\n");
+    // printf("path 1: ");
+    // for (int i = 0; i < cycles.second.size(); i++)
+    //     printf("%d ", cycles.second[i]);
+    // printf("\n");
+    // printf("Path lengths before GC: %d, %d\n", cycles.first.size(), cycles.second.size());
     this->constructive_solver->set_initial_solution(cycles);
     this->constructive_solver->reset_used_vertices();
     this->constructive_solver->reset_path_lengths();
@@ -123,17 +123,36 @@ TSolution DRLSSolver::repair(TPaths cycles)
     TPaths solution = this->constructive_solver->solve();
     TPathCost cost = this->constructive_solver->get_cost();
 
-    printf("-=Solution after GC=-\n");
-    printf("path 0: ");
-    for (int i = 0; i < solution.first.size(); i++)
-        printf("%d ", solution.first[i]);
-    printf("\n");
-    printf("path 1: ");
-    for (int i = 0; i < solution.second.size(); i++)
-        printf("%d ", solution.second[i]);
-    printf("\n");
-    printf("Cost: %d, %d\n", cost.first, cost.second);
-    printf("Path lengths after GC: %d, %d\n", solution.first.size(), solution.second.size());
+    // printf("-=Solution after GC=-\n");
+    // printf("path 0: ");
+    // for (int i = 0; i < solution.first.size(); i++)
+    //     printf("%d ", solution.first[i]);
+    // printf("\n");
+    // printf("path 1: ");
+    // for (int i = 0; i < solution.second.size(); i++)
+    //     printf("%d ", solution.second[i]);
+    // printf("\n");
+    // printf("Cost: %d, %d\n", cost.first, cost.second);
+    // printf("Path lengths after GC: %d, %d\n", solution.first.size(), solution.second.size());
+
+    // this->local_search_solver->set_initial_solution(solution);
+    // this->local_search_solver->reset_path_lengths();
+    // this->local_search_solver->reset_path_cost();
+
+    // solution = this->local_search_solver->solve();
+    // cost = this->local_search_solver->get_cost();
+
+    // printf("-=Solution after LS=-\n");
+    // printf("path 0: ");
+    // for (int i = 0; i < solution.first.size(); i++)
+    //     printf("%d ", solution.first[i]);
+    // printf("\n");
+    // printf("path 1: ");
+    // for (int i = 0; i < solution.second.size(); i++)
+    //     printf("%d ", solution.second[i]);
+    // printf("\n");
+    // printf("Cost: %d, %d\n", cost.first, cost.second);
+    // printf("Path lengths after LS: %d, %d\n", solution.first.size(), solution.second.size());
 
     return make_pair(solution, cost);
 }
@@ -172,7 +191,7 @@ TPaths DRLSSolver::remove_path_from_cycle(TPaths cycles, int path_idx, int first
     }
     else
     {
-        cycles.first = cycle;
+        cycles.second = cycle;
     }
 
     return cycles;
