@@ -280,15 +280,18 @@ int main(int argc, char **argv)
     (*init_sol_gen).set_start_vertex(start_vertex - 1);
     (*init_sol_gen).set_iterations(1);
 
+    TPaths initial_solution = (*init_sol_gen).solve();
+    TPathCost initial_cost = (*init_sol_gen).get_cost();
+
     (*ls_solver).set_iterations(iterations);
     (*ls_solver).load_data(distance_matrix);
     (*ls_solver).set_iterations(iterations);
     (*ls_solver).set_neighbourhood(neighbourhood);
     (*ls_solver).set_start_vertex(start_vertex);
     (*ls_solver).set_max_candidates(max_candidates);
+    (*ls_solver).set_initial_solution(initial_solution);
+    (*ls_solver).set_initial_cost(initial_cost);   
 
-    TPaths initial_solution = (*init_sol_gen).solve();
-    TPathCost initial_cost = (*init_sol_gen).get_cost();
 
     (*solver).load_data(distance_matrix);
     if (solver_name != "greedy-cycle")
