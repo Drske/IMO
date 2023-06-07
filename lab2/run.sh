@@ -5,14 +5,13 @@
 # python3 visualization.py data/kroA100.csv output2.json result2.pdf initial2.pdf
 # open -a Preview initial1.pdf initial2.pdf result1.pdf result2.pdf
 
-
-./main.out -solver ils1 \
+./main.out -solver shev \
            -in data/kroA200.tsp \
-           -out output1.json \
-           -start-vertex 1 \
+           -out output.json \
+           -start-vertex 0 \
            -init-sol-gen random-walk \
            -neigh N2 \
-           -iterations 100 \
+           -iterations 150 \
            -ls-solver queue-ls \
            -con-solver greedy-cycle \
-           -use-ls-to-repair false
+           -use-ls-to-repair true

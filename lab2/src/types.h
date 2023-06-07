@@ -24,6 +24,9 @@ typedef vector<TInsertionCost> TInsertionCosts;
 typedef pair<int, int> TEdge;
 typedef pair<TEdge, TEdge> TEdges;
 
+typedef pair<TPaths, TPathCost> TSolution;
+typedef vector<TSolution> TSolutions;
+
 enum MoveState
 {
     APPLICABLE,

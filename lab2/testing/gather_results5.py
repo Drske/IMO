@@ -70,7 +70,7 @@ gathered_results = pd.DataFrame({
 })
 
 for instance in ["kroA200.tsp", "kroB200.tsp"]:
-    for solver in ["ms-ls", "dr-ls", "dr-ls-a", "ils1"]:
+    for solver in ["shev", "shev-a"]:
         tmp = deepcopy(results[results["instance"] == instance])
         tmp = tmp[tmp["solver"] == solver]
         
@@ -82,7 +82,7 @@ for instance in ["kroA200.tsp", "kroB200.tsp"]:
         max_cost_sv = tmp[tmp.total_cost == tmp.total_cost.max()]["start_vertex"].values[0]
         max_cost_rn = tmp[tmp.total_cost == tmp.total_cost.max()]["run_no"].values[0]
         
-        avg_duration = tmp.duration.mean();
+        avg_duration = tmp.duration.mean()
         min_duration = tmp[tmp.duration == tmp.duration.min()]["duration"].values[0]
         min_duration_sv = tmp[tmp.duration == tmp.duration.min()]["start_vertex"].values[0]
         min_duration_rn = tmp[tmp.duration == tmp.duration.min()]["run_no"].values[0]

@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 TPaths CLSSolver::solve()
 {
-    printf("Solving Steepest Local Search with Candidate Moves\n");
+    // printf("Solving Steepest Local Search with Candidate Moves\n");
 
     vector<Move *> (*get_moves)(TPaths, int[][N], int) = nullptr;
     get_moves = MoveGenerator::get_second_neighbourhood_candidate_moves;

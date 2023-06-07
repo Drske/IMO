@@ -48,11 +48,12 @@ TPaths QLSSolver::solve()
     Move *best_move;
     TPathCost best_delta;
 
+    vector<Move *> moves;
+
     while (applied)
     {
         applied = false;
         best_delta = make_pair(INT_MAX / 2, INT_MAX / 2);
-        vector<Move *> moves;
         vector<MoveItem> future_moves;
 
         if (LM.empty())
@@ -99,6 +100,7 @@ TPaths QLSSolver::solve()
             {
                 //
             }
+            delete move;
         }
 
         if (best_delta.first + best_delta.second < 0)
@@ -113,6 +115,7 @@ TPaths QLSSolver::solve()
                 LM.push(*it);
             }
         }
+        moves.clear();
     }
     return this->paths;
 }

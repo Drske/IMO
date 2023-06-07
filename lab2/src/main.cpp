@@ -21,6 +21,8 @@
 #include "solvers/lssolvers/msls_tsp_solver.h"
 #include "solvers/lssolvers/ils1_tsp_solver.h"
 #include "solvers/lssolvers/drls_tsp_solver.h"
+#include "solvers/evsolvers/hev_tsp_solver.h"
+#include "solvers/evsolvers/shev_tsp_solver.h"
 
 #include "move_generator/move_generator.h"
 
@@ -125,7 +127,9 @@ int main(int argc, char **argv)
     solvers["ms-ls"] = new MSLSSolver();
     solvers["ils1"] = new ILS1Solver();
     solvers["dr-ls"] = new DRLSSolver();
-
+    solvers["hev"] = new HEVSolver();
+    solvers["shev"] = new SHEVSolver();
+ 
     init_sol_gens["greedy-cycle"] = new GCSolver();
     init_sol_gens["random-walk"] = new RLSSolver();
 

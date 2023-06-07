@@ -24,7 +24,7 @@ void RLSSolver::generate_fully_random_solution(default_random_engine rnd_e)
         this->path_cost.first += distance_matrix[vertices[i - 1]][vertices[i]];
         this->path_cost.second += distance_matrix[vertices[i - 1 + N / 2]][vertices[i + N / 2]];
     }
-    
+
     this->path_cost.first += distance_matrix[this->paths.first[0]][this->paths.first[N / 2 - 1]];
     this->path_cost.second += distance_matrix[this->paths.second[0]][this->paths.second[N / 2 - 1]];
 }
@@ -52,10 +52,11 @@ TPaths RLSSolver::solve()
 
     TPaths best_solution = this->paths;
     TPathCost best_cost = this->path_cost;
+    vector<Move *> moves;
 
     for (int i = 1; i < this->iterations; i++)
     {
-        vector<Move *> moves = get_moves(this->paths);
+        moves = get_moves(this->paths);
         shuffle(moves.begin(), moves.end(), rnd_e);
 
         TPathCost delta = moves[0]->get_cost_delta(this->paths, this->distance_matrix);
@@ -68,7 +69,17 @@ TPaths RLSSolver::solve()
             best_solution = this->paths;
             best_cost = this->path_cost;
         }
+
+        // Memory clean
+        for (auto move : moves)
+        {
+            delete move;
+        }
+        moves.clear();
+        
     }
+    get_moves = nullptr;
+    // clean end
 
     this->paths = best_solution;
     this->path_cost = best_cost;

@@ -1,8 +1,6 @@
 #ifndef DRLS_TSP_SOLVER_H
 #define DRLS_TSP_SOLVER_H
 
-typedef pair<TPaths, TPathCost> TSolution;
-
 #include "ls_tsp_solver.h"
 
 class DRLSSolver : public LSSolver

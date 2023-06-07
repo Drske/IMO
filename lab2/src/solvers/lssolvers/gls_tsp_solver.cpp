@@ -9,7 +9,7 @@ using namespace std;
 
 TPaths GLSSolver::solve()
 {
-    printf("Solving Greedy Local Search\n");
+    // printf("Solving Greedy Local Search\n");
 
     vector<Move *> (*get_moves)(TPaths) = nullptr;
     default_random_engine rnd_e(this->start_vertex);
@@ -25,11 +25,13 @@ TPaths GLSSolver::solve()
 
     bool applied = true;
 
+    vector<Move *> moves;
+
     while (applied)
     {
         applied = false;
 
-        vector<Move *> moves = get_moves(this->paths);
+        moves = get_moves(this->paths);
         shuffle(moves.begin(), moves.end(), rnd_e);
 
         for (vector<Move *>::iterator it = moves.begin(); it != moves.end(); it++)
@@ -44,7 +46,16 @@ TPaths GLSSolver::solve()
                 break;
             }
         }
+
+        // Memory clean
+        for (auto move : moves)
+        {
+            delete move;
+        }
+        moves.clear();
     }
+    get_moves = nullptr;
+    // clean end
 
     return this->paths;
 }
