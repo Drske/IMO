@@ -1,13 +1,13 @@
 #include "gc_tsp_solver.h"
+#include <random>
 
 TPaths GCSolver::solve()
 {
     // printf("Solving Greedy Cycle\n");
 
-    int start_vertex2 = this->find_furthest_vertex(this->start_vertex);
-
     if (this->start_vertex != -1)
     {
+        int start_vertex2 = this->find_furthest_vertex(this->start_vertex);
         this->add_vertex_to_path(1, this->start_vertex);
         this->add_vertex_to_path(1, this->find_nearest_vertex(this->start_vertex));
         this->add_vertex_to_path(2, start_vertex2);

@@ -5,8 +5,8 @@
 # python3 visualization.py data/kroA100.csv output2.json result2.pdf initial2.pdf
 # open -a Preview initial1.pdf initial2.pdf result1.pdf result2.pdf
 
-./main.out -solver shev \
-           -in data/kroA200.tsp \
+./main.out -solver hev \
+           -in data/kroB200.tsp \
            -out output.json \
            -start-vertex 0 \
            -init-sol-gen random-walk \

@@ -12,7 +12,7 @@ using namespace std;
 
 TPaths SHEVSolver::solve()
 {
-    printf("Solving Hybrid Evolutionary Algorithm\n");
+    printf("Solving Simple Hybrid Evolutionary Algorithm\n");
     this->population_max_size = 20;
     this->initialise_population();
 

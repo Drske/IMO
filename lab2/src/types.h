@@ -13,7 +13,7 @@ using namespace std;
 typedef vector<int> TPath;
 typedef pair<TPath, TPath> TPaths;
 typedef pair<int, int> TPathLength;
-typedef pair<int, int> TPathCost;
+typedef pair<long, long> TPathCost;
 
 typedef pair<int, int> TVertex;
 typedef TVertex TVertices[N];
